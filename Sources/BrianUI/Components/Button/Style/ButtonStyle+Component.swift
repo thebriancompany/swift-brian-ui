@@ -1,5 +1,11 @@
 import SwiftUI
 
+extension ButtonStyle where Self == BrianGhostButtonStyle {
+  public static var ghost: BrianGhostButtonStyle {
+    .init()
+  }
+}
+
 extension ButtonStyle where Self == BrianOutlineButtonStyle {
   public static var outline: BrianOutlineButtonStyle {
     .init()
