@@ -6,6 +6,6 @@ extension RadiusToken {
     small: 8,
     medium: 12,
     large: 16,
-    xLarge: 20
+    xLarge: 24
   )
 }

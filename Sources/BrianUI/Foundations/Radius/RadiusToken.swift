@@ -9,7 +9,7 @@ public struct RadiusToken: Hashable, Sendable {
   public var medium: CGFloat
   /// 기본값 16
   public var large: CGFloat
-  /// 기본값 20
+  /// 기본값 24
   public var xLarge: CGFloat
 
   public init(
