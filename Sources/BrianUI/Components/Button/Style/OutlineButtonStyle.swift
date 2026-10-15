@@ -3,30 +3,51 @@ import SwiftUI
 public struct BrianOutlineButtonStyle: ButtonStyle {
   @Environment(\.theme) private var theme
   @Environment(\.isEnabled) private var isEnabled
+  @Environment(\.isLoading) private var isLoading
   @Environment(\.buttonProperty) private var property
+
+  private var isButtonActive: Bool {
+    isLoading || isEnabled
+  }
 
   public init() {}
 
   public func makeBody(configuration: Configuration) -> some View {
-    configuration.label
+    let isPressed = configuration.isPressed && isEnabled && !isLoading
+    return configuration.label
       .typography(typography)
+      .opacity(isLoading ? 0 : 1)
+      .overlay {
+        if isLoading {
+          BrianLoadingSpinner(size: spinnerSize)
+        }
+      }
       .foregroundStyle(foregroundColor)
       .padding(.vertical, verticalPadding)
       .padding(.horizontal, horizontalPadding)
-      .background(backgroundColor(isPressed: configuration.isPressed), in: shape)
+      .background(backgroundColor(isPressed: isPressed), in: shape)
       .contentShape(shape)
       .overlay {
         shape.strokeBorder(borderColor, lineWidth: 1)
       }
-      .scaleEffect(configuration.isPressed ? 0.97 : 1)
+      .scaleEffect(isPressed ? 0.97 : 1)
       .animation(
         .interactiveSpring(
           response: 0.22,
           dampingFraction: 0.75,
           blendDuration: 0.1
         ),
-        value: configuration.isPressed
+        value: isPressed
       )
+  }
+
+  private var spinnerSize: CGFloat {
+    switch property.size {
+    case .xsmall: 14
+    case .small: 16
+    case .medium: 20
+    case .large: 24
+    }
   }
 
   private var shape: RoundedRectangle {
@@ -43,7 +64,7 @@ public struct BrianOutlineButtonStyle: ButtonStyle {
   }
 
   private var foregroundColor: Color {
-    guard isEnabled else {
+    guard isButtonActive else {
       return theme.color.foreground.disabled
     }
 
@@ -55,7 +76,7 @@ public struct BrianOutlineButtonStyle: ButtonStyle {
   }
 
   private var borderColor: Color {
-    if isEnabled {
+    if isButtonActive {
       return theme.color.border.base
     } else {
       return theme.color.border.disabled
@@ -64,7 +85,7 @@ public struct BrianOutlineButtonStyle: ButtonStyle {
 
   private func backgroundColor(isPressed: Bool) -> Color {
     let state = theme.color.background.transparent
-    guard isEnabled else {
+    guard isButtonActive else {
       return state.disabled
     }
     return isPressed ? state.pressed : state.normal
