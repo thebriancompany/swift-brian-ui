@@ -27,11 +27,11 @@ struct BrianCheckboxToggleStyle: ToggleStyle {
       .frame(minHeight: property.size.minimumHeight(theme.spacing))
       .contentShape(.rect)
     }
-    .buttonStyle(FoundesignCheckboxButtonStyle())
+    .buttonStyle(BrianCheckboxButtonStyle())
   }
 }
 
-private struct FoundesignCheckboxButtonStyle: ButtonStyle {
+private struct BrianCheckboxButtonStyle: ButtonStyle {
   func makeBody(configuration: Configuration) -> some View {
     configuration.label
       .environment(\.checkboxIsPressed, configuration.isPressed)

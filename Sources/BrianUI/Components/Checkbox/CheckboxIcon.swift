@@ -13,7 +13,7 @@ public struct BrianCheckboxIcon: View {
   }
 
   public var body: some View {
-    FoundesignCheckmarkLayout {
+    BrianCheckmarkLayout {
       Text(" ")
         .typography(typography)
         .fontWeight(property.weight.fontWeight)
@@ -112,7 +112,7 @@ public struct BrianCheckboxIcon: View {
 }
 
 /// Typography의 한 줄 높이로 정사각형을 구성합니다.
-private struct FoundesignCheckmarkLayout: Layout {
+private struct BrianCheckmarkLayout: Layout {
   func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
     let height = subviews.first?.sizeThatFits(.unspecified).height ?? .zero
     return CGSize(width: height, height: height)
