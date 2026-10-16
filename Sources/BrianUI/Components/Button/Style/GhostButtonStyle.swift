@@ -27,6 +27,7 @@ public struct BrianGhostButtonStyle: ButtonStyle {
       .foregroundStyle(foregroundColor)
       .padding(.vertical, verticalPadding)
       .padding(.horizontal, horizontalPadding)
+      .contentShape(shape)
       .background(backgroundColor(isPressed: isPressed), in: shape)
       .scaleEffect(isPressed ? 0.97 : 1)
       .animation(
