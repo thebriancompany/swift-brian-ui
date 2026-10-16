@@ -7,7 +7,7 @@
     let onDismiss: (() -> Void)?
     let content: () -> Content
 
-    func makeCoordinator() -> BrianAlertAppKitCoordinator {
+    func makeCoordinator() -> BrianAlertAppKitCoordinator<Content> {
       BrianAlertAppKitCoordinator()
     }
 
@@ -24,14 +24,14 @@
       context.coordinator.update(
         binding: $isPresented,
         onDismiss: onDismiss,
-        content: isPresented ? AnyView(content()) : nil,
+        content: isPresented ? content() : nil,
         environment: context.environment
       )
     }
 
     static func dismantleNSViewController(
       _ controller: BrianModalAppKitAnchor,
-      coordinator: BrianAlertAppKitCoordinator
+      coordinator: BrianAlertAppKitCoordinator<Content>
     ) {
       controller.attachmentChanged = nil
       DispatchQueue.main.async {

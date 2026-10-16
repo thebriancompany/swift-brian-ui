@@ -3,16 +3,16 @@
   import SwiftUI
 
   @MainActor
-  final class BrianAlertAppKitCoordinator {
+  final class BrianAlertAppKitCoordinator<Content: View> {
     weak var anchor: BrianModalAppKitAnchor?
 
     private var binding: Binding<Bool> = .constant(false)
     private var onDismiss: (() -> Void)?
-    private var content = AnyView(EmptyView())
+    private var content: Content?
     private var environment = EnvironmentValues()
-    private var dialog: BrianAlertAppKitController?
+    private var dialog: BrianAlertAppKitController<Content>?
     private var presenter: NSViewController?
-    private var animator: BrianAlertAppKitAnimator?
+    private var animator: BrianAlertAppKitAnimator<Content>?
     private var updateScheduled = false
 
     lazy var presentation = BrianModalPresentation(
@@ -27,7 +27,7 @@
     func update(
       binding: Binding<Bool>,
       onDismiss: (() -> Void)?,
-      content: AnyView?,
+      content: Content?,
       environment: EnvironmentValues
     ) {
       self.binding = binding
@@ -36,7 +36,9 @@
         self.content = content
       }
       self.environment = environment
-      dialog?.update(content: hostedContent, environment: environment)
+      if let hostedContent {
+        dialog?.update(content: hostedContent, environment: environment)
+      }
       animator?.update(environment: environment)
       scheduleUpdate()
     }
@@ -63,23 +65,26 @@
       }
     }
 
-    private var hostedContent: AnyView {
-      AnyView(
+    private var hostedContent: BrianAlertHostedContent<Content>? {
+      content.map {
         BrianAlertHostedContent(
-          content: content,
+          content: $0,
           environment: environment,
           presentation: presentation
-        ))
+        )
+      }
     }
 
     private func present() -> Bool {
-      guard let anchor, let window = anchor.attachedWindow else {
+      guard let hostedContent, let anchor, let window = anchor.attachedWindow else {
         return false
       }
       let dialog = BrianAlertAppKitController(
-        content: hostedContent, environment: environment)
+        content: hostedContent,
+        environment: environment
+      )
       dialog.owner = self
-      let animator = BrianAlertAppKitAnimator(
+      let animator = BrianAlertAppKitAnimator<Content>(
         parentWindow: window,
         environment: environment,
         presentationFinished: { [weak self, weak dialog] in
@@ -125,14 +130,17 @@
   }
 
   @MainActor
-  private final class BrianAlertAppKitController: NSViewController {
-    var owner: BrianAlertAppKitCoordinator?
-    let host: NSHostingController<AnyView>
+  private final class BrianAlertAppKitController<Content: View>: NSViewController {
+    var owner: BrianAlertAppKitCoordinator<Content>?
+    let host: NSHostingController<BrianAlertHostedContent<Content>>
     let dimmer = NSView()
 
     private var environment: EnvironmentValues
 
-    init(content: AnyView, environment: EnvironmentValues) {
+    init(
+      content: BrianAlertHostedContent<Content>,
+      environment: EnvironmentValues
+    ) {
       host = NSHostingController(rootView: content)
       self.environment = environment
       super.init(nibName: nil, bundle: nil)
@@ -159,7 +167,10 @@
       }
     }
 
-    func update(content: AnyView, environment: EnvironmentValues) {
+    func update(
+      content: BrianAlertHostedContent<Content>,
+      environment: EnvironmentValues
+    ) {
       self.environment = environment
       host.rootView = content
       if isViewLoaded {
@@ -213,9 +224,7 @@
   }
 
   @MainActor
-  private final class BrianAlertAppKitAnimator: NSObject,
-    NSViewControllerPresentationAnimator
-  {
+  private final class BrianAlertAppKitAnimator<Content: View>: NSObject, NSViewControllerPresentationAnimator {
     private weak var parentWindow: NSWindow?
     private weak var previousResponder: NSResponder?
     private var environment: EnvironmentValues
@@ -248,8 +257,11 @@
       panel?.appearance = NSAppearance(named: environment.colorScheme == .dark ? .darkAqua : .aqua)
     }
 
-    func animatePresentation(of controller: NSViewController, from presenter: NSViewController) {
-      guard let parentWindow, let dialog = controller as? BrianAlertAppKitController
+    func animatePresentation(
+      of controller: NSViewController,
+      from presenter: NSViewController
+    ) {
+      guard let parentWindow, let dialog = controller as? BrianAlertAppKitController<Content>
       else {
         return
       }
@@ -307,7 +319,7 @@
     }
 
     func animateDismissal(of controller: NSViewController, from presenter: NSViewController) {
-      guard let dialog = controller as? BrianAlertAppKitController else {
+      guard let dialog = controller as? BrianAlertAppKitController<Content> else {
         return
       }
       animateDimmer(dialog.dimmer, showing: false)

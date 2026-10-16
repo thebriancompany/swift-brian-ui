@@ -15,10 +15,13 @@ final class BrianModalPresentation {
   private var isReady = false
   private var isInvalidated = false
   private var dismissalRequested = false
-  private let present: () -> Bool
-  private let dismiss: () -> Void
+  private let present: @MainActor () -> Bool
+  private let dismiss: @MainActor () -> Void
 
-  init(present: @escaping () -> Bool, dismiss: @escaping () -> Void) {
+  init(
+    present: @escaping @MainActor () -> Bool,
+    dismiss: @escaping @MainActor () -> Void
+  ) {
     self.present = present
     self.dismiss = dismiss
   }

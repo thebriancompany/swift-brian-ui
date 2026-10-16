@@ -2,15 +2,16 @@
   import SwiftUI
   import UIKit
 
-  final class BrianAlertUIKitCoordinator: NSObject, UIViewControllerTransitioningDelegate
+  @MainActor
+  final class BrianAlertUIKitCoordinator<Content: View>: NSObject, UIViewControllerTransitioningDelegate
   {
     weak var anchor: BrianModalUIKitAnchor?
 
     private var binding: Binding<Bool> = .constant(false)
     private var onDismiss: (() -> Void)?
-    private var content = AnyView(EmptyView())
+    private var content: Content?
     private var environment = EnvironmentValues()
-    private var dialog: BrianAlertUIKitController?
+    private var dialog: BrianAlertUIKitController<Content>?
     private var presenter: UIViewController?
     private var updateScheduled = false
     private var previousFocus: Any?
@@ -27,7 +28,7 @@
     func update(
       binding: Binding<Bool>,
       onDismiss: (() -> Void)?,
-      content: AnyView?,
+      content: Content?,
       environment: EnvironmentValues
     ) {
       self.binding = binding
@@ -36,12 +37,10 @@
         self.content = content
       }
       self.environment = environment
-      if let dialog {
+      if let dialog, let hostedContent {
         dialog.rootView = hostedContent
         dialog.overrideUserInterfaceStyle = environment.colorScheme == .dark ? .dark : .light
-        if let controller = dialog.presentationController
-          as? BrianAlertUIKitPresentationController
-        {
+        if let controller = dialog.presentationController as? BrianAlertUIKitPresentationController<Content> {
           controller.update(environment: environment)
         }
       }
@@ -70,18 +69,18 @@
       }
     }
 
-    private var hostedContent: AnyView {
-      AnyView(
+    private var hostedContent: BrianAlertHostedContent<Content>? {
+      content.map {
         BrianAlertHostedContent(
-          content: content,
+          content: $0,
           environment: environment,
           presentation: presentation
         )
-      )
+      }
     }
 
     private func present() -> Bool {
-      guard let anchor, anchor.viewIfLoaded?.window != nil else {
+      guard let hostedContent, let anchor, anchor.viewIfLoaded?.window != nil else {
         return false
       }
       var controller: UIViewController = anchor
@@ -148,7 +147,7 @@
       presenting: UIViewController?,
       source: UIViewController
     ) -> UIPresentationController? {
-      BrianAlertUIKitPresentationController(
+      BrianAlertUIKitPresentationController<Content>(
         presentedViewController: presented,
         presenting: presenting,
         environment: environment
@@ -176,8 +175,8 @@
     }
   }
 
-  private final class BrianAlertUIKitController: UIHostingController<AnyView> {
-    var owner: BrianAlertUIKitCoordinator?
+  private final class BrianAlertUIKitController<Content: View>: UIHostingController<BrianAlertHostedContent<Content>> {
+    var owner: BrianAlertUIKitCoordinator<Content>?
 
     override var canBecomeFirstResponder: Bool { true }
     override var keyCommands: [UIKeyCommand]? {
@@ -216,7 +215,7 @@
     }
   }
 
-  private final class BrianAlertUIKitPresentationController: UIPresentationController {
+  private final class BrianAlertUIKitPresentationController<Content: View>: UIPresentationController {
     private let dimmer = UIView()
     private var environment: EnvironmentValues
 
@@ -241,7 +240,7 @@
     override var frameOfPresentedViewInContainerView: CGRect {
       guard
         let containerView,
-        let host = presentedViewController as? BrianAlertUIKitController
+        let host = presentedViewController as? BrianAlertUIKitController<Content>
       else {
         return .zero
       }
