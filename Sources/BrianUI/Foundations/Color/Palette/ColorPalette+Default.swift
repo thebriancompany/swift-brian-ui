@@ -35,10 +35,10 @@ extension ColorPalette {
       `400`: .adaptive(light: 0xD8DCE2, dark: 0x43474F),
       `500`: .adaptive(light: 0xB9C1CD, dark: 0x566276),
       `600`: .adaptive(light: 0x8993A3, dark: 0x748196),
-      `700`: .adaptive(light: 0x626D7E, dark: 0x9AA8BC),
-      `800`: .adaptive(light: 0x485365, dark: 0xBAC6D6),
+      `700`: .adaptive(light: 0x656E7B, dark: 0x9AA8BC),
+      `800`: .adaptive(light: 0x434B57, dark: 0xBAC6D6),
       `900`: .adaptive(light: 0x303B4B, dark: 0xD8E1ED),
-      `1000`: .adaptive(light: 0x1B2533, dark: 0xF0F4FA)
+      `1000`: .adaptive(light: 0x171C24, dark: 0xF0F4FA)
     ),
     green: .init(
       `100`: .adaptive(light: 0xEDF9F2, dark: 0x152A20),

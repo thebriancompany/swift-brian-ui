@@ -22,7 +22,7 @@ public struct BrianMenuGroup<Content: View>: View {
       if let title {
         Text(title)
           .typography(theme.typography.label.small)
-          .foregroundStyle(theme.color.foreground.tertiary)
+          .foregroundStyle(theme.color.foreground.secondary)
           .padding(.horizontal, theme.spacing.large)
           .padding(.vertical, theme.spacing.small)
       }
