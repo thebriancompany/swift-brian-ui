@@ -38,6 +38,15 @@ private struct BrianQuantityPickerButtonStyle: ButtonStyle {
       .padding(.horizontal, horizontalPadding)
       .contentShape(shape)
       .background(backgroundColor(isPressed: isPressed), in: shape)
+      .scaleEffect(isPressed ? 0.97 : 1)
+      .animation(
+        .interactiveSpring(
+          response: 0.22,
+          dampingFraction: 0.75,
+          blendDuration: 0.1
+        ),
+        value: isPressed
+      )
   }
 
   private var size: CGFloat {
