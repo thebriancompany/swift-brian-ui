@@ -16,6 +16,7 @@ struct BrianMenuOverlay<Content: View>: View {
       Color.clear
         .contentShape(.rect)
         .onTapGesture(perform: dismiss)
+
       ScrollView {
         VStack(alignment: .leading, spacing: .zero) {
           content
@@ -39,11 +40,7 @@ struct BrianMenuOverlay<Content: View>: View {
           .strokeBorder(theme.color.border.base.opacity(0.4), lineWidth: 0.5)
           .allowsHitTesting(false)
       }
-      .shadow(
-        color: theme.color.background.overlay.opacity(0.24),
-        radius: theme.spacing.medium,
-        y: theme.spacing.xSmall
-      )
+      .shadow(theme.shadow.elevated)
       .environment(\.dismissMenu, BrianMenuDismissAction(action: dismiss))
       .environment(\.layoutDirection, layoutDirection)
       .onPreferenceChange(BrianMenuHeightPreference.self) { contentHeight = $0 }
