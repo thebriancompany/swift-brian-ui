@@ -29,7 +29,14 @@ extension View {
     _ variant: BrianContentFogVariant = .bottom,
     fraction: CGFloat = 0.2
   ) -> some View {
-    modifier(BrianContentFogModifier(variant: variant, fraction: fraction))
+    modifier(BrianContentFogModifier(variant: variant, height: .fraction(fraction)))
+  }
+
+  public func contentFog(
+    _ variant: BrianContentFogVariant = .bottom,
+    height: CGFloat
+  ) -> some View {
+    modifier(BrianContentFogModifier(variant: variant, height: .fixed(height)))
   }
 }
 
@@ -43,15 +50,23 @@ public enum BrianContentFogVariant: CaseIterable, Hashable, Sendable {
   case both
 }
 
+public enum BrianContentFogHeight: Hashable, Sendable {
+  case fixed(CGFloat)
+  case fraction(CGFloat)
+}
+
 private struct BrianContentFogModifier: ViewModifier {
   @Environment(\.theme) private var theme
 
   private let variant: BrianContentFogVariant
-  private let fraction: CGFloat
+  private let height: BrianContentFogHeight
 
-  public init(variant: BrianContentFogVariant, fraction: CGFloat) {
+  public init(
+    variant: BrianContentFogVariant,
+    height: BrianContentFogHeight
+  ) {
     self.variant = variant
-    self.fraction = fraction
+    self.height = height
   }
 
   func body(content: Content) -> some View {
@@ -61,17 +76,24 @@ private struct BrianContentFogModifier: ViewModifier {
           VStack(spacing: .zero) {
             if variant != .bottom {
               BrianContentFog(direction: .down)
-                .frame(height: proxy.size.height * fraction)
+                .frame(height: height(proxy.size.height))
             }
 
             Spacer()
 
             if variant != .top {
               BrianContentFog(direction: .up)
-                .frame(height: proxy.size.height * fraction)
+                .frame(height: height(proxy.size.height))
             }
           }
         }
       }
+  }
+
+  private func height(_ proxyHeight: CGFloat) -> CGFloat {
+    switch height {
+    case let .fixed(height): height
+    case let .fraction(fraction): proxyHeight * fraction
+    }
   }
 }
