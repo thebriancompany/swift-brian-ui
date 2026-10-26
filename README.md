@@ -4,7 +4,7 @@
 
 # Brian Design System
 
-SwiftUI 앱을 위한 테마와 UI 컴포넌트 라이브러리입니다. 현재 개발 중입니다.
+SwiftUI 앱을 위한 테마와 UI 컴포넌트 라이브러리입니다. 현재 버전은 **0.1.0**이며, 1.0 이전에는 API가 변경될 수 있습니다.
 
 ## 설치
 
@@ -13,8 +13,15 @@ SwiftUI 앱을 위한 테마와 UI 컴포넌트 라이브러리입니다. 현재
 - 패키지 저장소: `https://github.com/thebriancompany/swift-brian-ui.git`
 - 앱 타깃에 추가할 제품 및 import 모듈: `BrianUI`
 
-Xcode에서 패키지 의존성을 추가하고 프로젝트에서 검증한 태그나 리비전을 선택하세요.
+Xcode에서 패키지 의존성을 추가하고 **Exact Version: 0.1.0**을 선택하세요.
 기본 테마가 제공되므로 별도 초기화 없이 사용할 수 있습니다.
+
+`Package.swift`에서는 다음과 같이 추가합니다. 앱 타깃의 dependencies에는
+`.product(name: "BrianUI", package: "swift-brian-ui")`를 지정하세요.
+
+```swift
+.package(url: "https://github.com/thebriancompany/swift-brian-ui.git", exact: "0.1.0")
+```
 
 ```swift
 import BrianUI
@@ -31,6 +38,8 @@ struct ExampleView: View {
 
 ## 문서
 
+- [BrianUI 0.1.0 API 문서 (DocC)](https://thebriancompany.github.io/swift-brian-ui/0.1.0/documentation/brianui/)
+- [0.1.0 릴리스](https://github.com/thebriancompany/swift-brian-ui/releases/tag/0.1.0)
 - [시작하기와 컴포넌트 선택](Sources/BrianUI/BrianUI.docc/Articles/GettingStarted.md)
 - [테마와 스타일](Sources/BrianUI/BrianUI.docc/Articles/Theming.md)
 - [입력과 선택 상태](Sources/BrianUI/BrianUI.docc/Articles/Forms.md)

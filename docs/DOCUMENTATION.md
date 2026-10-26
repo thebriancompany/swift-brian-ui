@@ -74,3 +74,28 @@ DocC 변환은 코드 블록을 컴파일하지 않습니다. 사용 예제는 �
 
 현재 문서화는 핵심 사용 경로와 동작상 주의점부터 시작합니다.
 모든 토큰 및 보조 공개 심볼의 주석이 완비된 상태는 아니므로, API를 수정할 때 해당 영역을 함께 보완합니다.
+
+## 버전별 문서 배포
+
+라이브러리와 문서는 같은 Git 태그를 기준으로 배포합니다. 첫 릴리스 태그는 `0.1.0`입니다.
+GitHub Pages는 `gh-pages` 브랜치의 루트를 게시하며, 버전별 문서를 `/<버전>/`에 보관합니다.
+예: https://thebriancompany.github.io/swift-brian-ui/0.1.0/documentation/brianui/
+
+릴리스할 커밋에서 다음 명령으로 정적 호스팅용 문서를 생성합니다.
+
+```sh
+swift build -c release
+swift package dump-symbol-graph
+xcrun docc convert Sources/BrianUI/BrianUI.docc \
+  --additional-symbol-graph-dir .build/out/symbolgraph \
+  --fallback-display-name BrianUI \
+  --fallback-bundle-identifier com.thebriancompany.BrianUI \
+  --output-path .build/BrianUI.doccarchive \
+  --hosting-base-path swift-brian-ui/0.1.0 \
+  --warnings-as-errors
+```
+
+생성된 아카이브의 내용을 `gh-pages` 브랜치의 `0.1.0/`에 복사합니다.
+브랜치 루트에는 `.nojekyll` 파일과 문서 진입 페이지를 둡니다.
+다음 릴리스에서는 명령의 버전과 배포 디렉터리를 함께 변경하고, 이전 버전 문서는 유지합니다.
+문서 빌드는 로컬 Xcode에서 수행하며, `gh-pages` 푸시 후 GitHub Pages의 배포 완료를 확인합니다.
