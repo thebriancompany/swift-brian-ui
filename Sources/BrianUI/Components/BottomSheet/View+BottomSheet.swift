@@ -1,6 +1,18 @@
 import SwiftUI
 
 extension View {
+  /// 화면 하단에 BrianUI 바텀 시트를 표시합니다.
+  ///
+  /// 유효한 스냅 지점은 중복을 제거하고 정렬하며, 처음에는 가장 낮은 지점을 사용합니다.
+  /// 유효한 지점이 없으면 콘텐츠 높이에 맞추되 화면에서 허용하는 최대 높이를 넘지 않습니다.
+  ///
+  /// - Parameters:
+  ///   - isPresented: 표시 상태입니다. `false`로 변경하면 닫힙니다.
+  ///   - snapPoints: 시트가 멈출 높이입니다. 기본값은 빈 배열입니다.
+  ///   - isDismissible: 배경 탭이나 아래로 드래그해서 닫을 수 있는지 여부입니다.
+  ///     `false`여도 바인딩 변경 또는 닫기 버튼으로 닫을 수 있습니다.
+  ///   - content: 시트에 표시할 콘텐츠입니다.
+  /// - Returns: 바텀 시트 프레젠터가 연결된 뷰입니다.
   public func bottomSheet<SheetContent: View>(
     isPresented: Binding<Bool>,
     snapPoints: [BrianBottomSheetSnapPoint] = [],

@@ -1,5 +1,8 @@
 import SwiftUI
 
+/// 불리언 상태를 켜거나 끄는 BrianUI 토글입니다.
+///
+/// `Binding<Bool>`로 상태를 전달하고 `switchSize(_:)`, `switchTone(_:)`으로 외형을 설정합니다.
 public struct BrianSwitch<Label>: View where Label: View {
   private let toggle: Toggle<Label>
 

@@ -1,5 +1,8 @@
 import Foundation
 
+/// 기본 버튼 스타일의 크기와 색상 역할입니다.
+///
+/// 기본값은 `.medium` 크기와 `.neutral` 색상입니다. 플로팅 버튼은 별도의 프로퍼티를 사용합니다.
 public struct BrianButtonProperty: Hashable, Sendable {
   public var size: Size
   public var tone: Tone

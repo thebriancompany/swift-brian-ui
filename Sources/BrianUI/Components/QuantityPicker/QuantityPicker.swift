@@ -1,5 +1,8 @@
 import SwiftUI
 
+/// 정수 수량을 한 번에 1씩 늘리거나 줄이는 컨트롤입니다.
+///
+/// 최솟값과 최댓값을 자동으로 제한하지 않습니다. 호출자가 각 방향의 비활성화 조건을 전달해야 합니다.
 public struct BrianQuantityPicker: View {
   @Environment(\.theme) private var theme
   @Environment(\.isEnabled) private var isEnabled
@@ -8,6 +11,12 @@ public struct BrianQuantityPicker: View {
   private let isDecrementDisabled: Bool
   private let isIncrementDisabled: Bool
 
+  /// 수량 바인딩과 증감 버튼의 활성화 조건으로 컨트롤을 만듭니다.
+  ///
+  /// - Parameters:
+  ///   - quantity: 표시하고 변경할 수량입니다.
+  ///   - isDecrementDisabled: 감소 버튼을 비활성화할지 여부입니다. 기본값은 `false`입니다.
+  ///   - isIncrementDisabled: 증가 버튼을 비활성화할지 여부입니다. 기본값은 `false`입니다.
   public init(
     quantity: Binding<Int>,
     isDecrementDisabled: Bool = false,

@@ -1,5 +1,8 @@
 import SwiftUI
 
+/// 바텀 시트의 제목, 본문 및 하단 액션을 배치하는 컨테이너입니다.
+///
+/// 이 뷰 자체는 시트를 표시하지 않습니다. `bottomSheet(isPresented:snapPoints:isDismissible:content:)`의 콘텐츠로 사용하세요.
 public struct BrianBottomSheetContainer<Content: View, Footer: View>: View {
   @Environment(\.theme) private var theme
   @Environment(\.bottomSheetHeaderAlignment) private var alignment

@@ -7,6 +7,7 @@ import SwiftUI
 /// ```swift
 /// BrianCheckboxGroup {
 ///   BrianCheckbox("이용약관 동의", isOn: $terms)
+///
 ///   BrianCheckbox("개인정보 처리방침 동의", isOn: $privacy)
 /// } header: {
 ///   BrianCheckbox("전체 동의", sources: [$terms, $privacy])

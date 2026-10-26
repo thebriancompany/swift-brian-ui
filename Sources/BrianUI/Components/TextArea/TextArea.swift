@@ -1,5 +1,13 @@
 import SwiftUI
 
+/// 제목, 도움말 및 오류 상태를 표시하는 여러 줄 텍스트 입력입니다.
+///
+/// 텍스트는 호출자가 소유한 `Binding<String>`으로 전달합니다.
+/// 필수 여부와 최대 길이는 표시 및 오류 상태를 위한 설정이며,
+/// 입력 차단이나 제출 검증은 호출자가 구현합니다.
+///
+/// 컴포넌트 고유 메서드는 일반 `View` 수정자보다 먼저 호출하세요.
+/// 사용 예제는 <doc:Forms>를 참고하세요.
 public struct BrianTextArea<HeaderTrailing: View>: View {
   @Environment(\.theme) private var theme
   @Environment(\.isEnabled) private var isEnabled
@@ -17,6 +25,13 @@ public struct BrianTextArea<HeaderTrailing: View>: View {
   private var focus: FocusState<Bool>.Binding?
   private let headerTrailing: HeaderTrailing
 
+  /// 여러 줄 텍스트 입력을 만듭니다.
+  ///
+  /// - Parameters:
+  ///   - title: 입력 위에 표시할 제목입니다. 빈 문자열이면 제목을 숨깁니다.
+  ///   - text: 입력값을 읽고 쓰는 바인딩입니다.
+  ///   - placeholder: 입력값이 비어 있을 때 표시할 안내입니다.
+  ///   - headerTrailing: 제목 뒤에 배치할 뷰입니다.
   public init(
     title: String,
     text: Binding<String>,
@@ -29,30 +44,52 @@ public struct BrianTextArea<HeaderTrailing: View>: View {
     self.headerTrailing = headerTrailing()
   }
 
+  /// 입력 아래에 표시할 도움말을 설정합니다.
+  ///
+  /// - Parameter text: 도움말입니다. `nil` 또는 빈 문자열이면 숨깁니다. 오류 메시지가 우선합니다.
+  /// - Returns: 도움말이 설정된 입력 컴포넌트입니다.
   public func helperText(_ text: String?) -> Self {
     var area = self
     area.helperText = text
     return area
   }
 
+  /// 오류 메시지와 오류 스타일을 설정합니다.
+  ///
+  /// - Parameter message: 오류 메시지입니다. `nil` 또는 빈 문자열이면 메시지로 인한 오류 상태를 해제합니다.
+  /// - Returns: 오류 메시지가 설정된 입력 컴포넌트입니다.
   public func errorMessage(_ message: String?) -> Self {
     var area = self
     area.errorMessage = message
     return area
   }
 
+  /// 제목에 필수 또는 선택 표시를 추가합니다. 입력값을 검증하지 않습니다.
+  ///
+  /// - Parameter requirement: 표시할 필수 여부입니다.
+  /// - Returns: 필수 여부가 설정된 입력 컴포넌트입니다.
   public func requirement(_ requirement: BrianTextAreaRequirement) -> Self {
     var area = self
     area.requirement = requirement
     return area
   }
 
+  /// 글자 수와 최대 길이를 표시하고, 길이를 초과하면 오류 스타일을 적용합니다.
+  ///
+  /// 입력값을 자르거나 입력을 차단하지 않습니다. 글자 수는 `String.count`로 계산합니다.
+  ///
+  /// - Parameter length: 최대 길이입니다. `nil`이면 제한 표시를 제거하고, 음수는 0으로 취급합니다.
+  /// - Returns: 최대 길이가 설정된 입력 컴포넌트입니다.
   public func maximumLength(_ length: Int?) -> Self {
     var area = self
     area.maximumLength = length.map { max(0, $0) }
     return area
   }
 
+  /// 외부 포커스 상태를 입력에 연결합니다.
+  ///
+  /// - Parameter focus: 호출자의 `@FocusState` 바인딩입니다. `nil`이면 내부 포커스 상태를 사용합니다.
+  /// - Returns: 포커스 바인딩이 설정된 입력 컴포넌트입니다.
   public func textAreaFocused(_ focus: FocusState<Bool>.Binding?) -> Self {
     var area = self
     area.focus = focus

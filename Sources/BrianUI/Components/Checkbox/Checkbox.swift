@@ -1,5 +1,9 @@
 import SwiftUI
 
+/// 단일 선택 또는 여러 선택값의 전체 선택 상태를 표시하는 체크박스입니다.
+///
+/// `sources:` 초기화는 여러 `Binding<Bool>`을 연결합니다. 빈 컬렉션은 선택되지 않은 비활성 상태로 표시합니다.
+/// ``BrianCheckboxGroup``은 배치만 담당하므로 전체 선택은 `sources:`로 연결하세요.
 public struct BrianCheckbox<Label>: View where Label: View {
   private let toggle: Toggle<Label>
   private let isEmpty: Bool
