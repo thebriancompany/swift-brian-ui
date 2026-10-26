@@ -49,7 +49,7 @@ Xcode의 전체 개발 도구가 선택된 macOS에서 저장소 루트를 기�
 추가 패키지 플러그인 없이 SwiftPM과 Xcode에 포함된 DocC를 사용합니다.
 
 ```sh
-swift package dump-symbol-graph
+swift package dump-symbol-graph --skip-synthesized-members
 xcrun docc convert Sources/BrianUI/BrianUI.docc \
   --additional-symbol-graph-dir .build/out/symbolgraph \
   --fallback-display-name BrianUI \
@@ -78,24 +78,38 @@ DocC 변환은 코드 블록을 컴파일하지 않습니다. 사용 예제는 �
 ## 버전별 문서 배포
 
 라이브러리와 문서는 같은 Git 태그를 기준으로 배포합니다. 첫 릴리스 태그는 `0.1.0`입니다.
-GitHub Pages는 `gh-pages` 브랜치의 루트를 게시하며, 버전별 문서를 `/<버전>/`에 보관합니다.
-예: https://thebriancompany.github.io/swift-brian-ui/0.1.0/documentation/brianui/
+`0.1.0`처럼 숫자 세 자리의 릴리스 태그를 게시하면 `.github/workflows/documentation.yml`이 실행됩니다.
+GitHub Actions에서 Xcode 27로 문서를 빌드하고 Pages에 artifact로 직접 배포합니다.
+생성된 HTML·JSON 파일을 Git에 커밋하거나 `gh-pages` 브랜치를 관리하지 않습니다.
 
-릴리스할 커밋에서 다음 명령으로 정적 호스팅용 문서를 생성합니다.
+### 최초 설정
+
+저장소 Settings → Pages → Build and deployment → Source를 **GitHub Actions**로 설정합니다.
+`github-pages` environment에 배포 제한이 있다면 릴리스 태그의 배포를 허용해야 합니다.
+워크플로를 main에 게시한 다음, 그 커밋에 릴리스 태그를 생성합니다.
+
+### 릴리스와 재배포
+
+1. 릴리스할 코드와 문서를 main에 반영하고 검증합니다.
+2. 해당 커밋의 버전 태그를 GitHub에 게시합니다. 이미 배포한 태그는 이동하지 않습니다.
+3. Actions의 **Publish DocC** 실행 결과와 Pages URL을 확인합니다.
+4. 같은 태그로 GitHub Release를 게시합니다.
+
+재배포는 Actions → Publish DocC → Run workflow에서 main을 선택해 실행합니다.
+Swift tools 6.4가 필요하므로 `xcode-27` 러너를 사용합니다.
+
+### 버전 보존과 로컬 검증
+
+`scripts/build-documentation.py`는 모든 정식 버전 태그의 소스를 각각 빌드하여
+`.build/site/<버전>/`에 문서를 생성합니다. Pages는 배포할 때 사이트 전체를 교체하므로,
+이 방식으로 이전 버전 문서도 유지합니다. 버전이 많아지면 빌드 시간에 맞춰 캐시나
+별도 아카이브 저장소를 도입할 수 있습니다. 현재 작업 트리의 미커밋 변경은 포함하지 않습니다.
 
 ```sh
-swift build -c release
-swift package dump-symbol-graph
-xcrun docc convert Sources/BrianUI/BrianUI.docc \
-  --additional-symbol-graph-dir .build/out/symbolgraph \
-  --fallback-display-name BrianUI \
-  --fallback-bundle-identifier com.thebriancompany.BrianUI \
-  --output-path .build/BrianUI.doccarchive \
-  --hosting-base-path swift-brian-ui/0.1.0 \
-  --warnings-as-errors
+python3 scripts/build-documentation.py
 ```
 
-생성된 아카이브의 내용을 `gh-pages` 브랜치의 `0.1.0/`에 복사합니다.
-브랜치 루트에는 `.nojekyll` 파일과 문서 진입 페이지를 둡니다.
-다음 릴리스에서는 명령의 버전과 배포 디렉터리를 함께 변경하고, 이전 버전 문서는 유지합니다.
-문서 빌드는 로컬 Xcode에서 수행하며, `gh-pages` 푸시 후 GitHub Pages의 배포 완료를 확인합니다.
+SwiftUI에서 합성된 기본 구현은 `--skip-synthesized-members`로 제외합니다.
+공개 API와 DocC 문서의 링크는 `--warnings-as-errors`로 검증합니다.
+
+문서 주소: https://thebriancompany.github.io/swift-brian-ui/0.1.0/documentation/brianui/
