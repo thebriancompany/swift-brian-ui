@@ -1,6 +1,6 @@
-![Brian Design System](doc/assets/cover.webp)
+![Brian Design System](docs/assets/cover.webp)
 
-![개발 중인 Brian Design System](doc/assets/wip.png)
+![개발 중인 Brian Design System](docs/assets/wip.png)
 
 # Brian Design System
 
