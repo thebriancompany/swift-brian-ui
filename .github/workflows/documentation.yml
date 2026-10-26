@@ -23,7 +23,31 @@ jobs:
           fetch-depth: 0
       - uses: actions/configure-pages@v5
       - name: Build versioned documentation
-        run: python3 scripts/build-documentation.py
+        shell: bash
+        run: |
+          site="$GITHUB_WORKSPACE/.build/site"
+          mkdir -p "$site"
+          printf '<!doctype html><html lang="ko"><meta charset="utf-8"><title>BrianUI 문서</title><h1>BrianUI 문서</h1><ul>\n' > "$site/index.html"
+          git tag --list --sort=-v:refname | grep -E '^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$' > "$RUNNER_TEMP/doc-versions"
+          while IFS= read -r version; do
+            source_dir=$(mktemp -d "$RUNNER_TEMP/brianui-XXXXXX")
+            git archive "refs/tags/$version" | tar -x -C "$source_dir"
+            (
+              cd "$source_dir"
+              swift build -c release
+              swift package dump-symbol-graph --skip-synthesized-members
+              xcrun docc convert Sources/BrianUI/BrianUI.docc \
+                --additional-symbol-graph-dir .build/out/symbolgraph \
+                --fallback-display-name BrianUI \
+                --fallback-bundle-identifier com.thebriancompany.BrianUI \
+                --output-path "$site/$version" \
+                --hosting-base-path "${GITHUB_REPOSITORY#*/}/$version" \
+                --warnings-as-errors
+            )
+            printf '<li><a href="%s/documentation/brianui/">BrianUI %s</a></li>\n' "$version" "$version" >> "$site/index.html"
+            rm -rf "$source_dir"
+          done < "$RUNNER_TEMP/doc-versions"
+          printf '</ul></html>\n' >> "$site/index.html"
       - uses: actions/upload-pages-artifact@v4
         with:
           path: .build/site

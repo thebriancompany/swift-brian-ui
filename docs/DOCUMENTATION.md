@@ -75,41 +75,16 @@ DocC 변환은 코드 블록을 컴파일하지 않습니다. 사용 예제는 �
 현재 문서화는 핵심 사용 경로와 동작상 주의점부터 시작합니다.
 모든 토큰 및 보조 공개 심볼의 주석이 완비된 상태는 아니므로, API를 수정할 때 해당 영역을 함께 보완합니다.
 
-## 버전별 문서 배포
+## 릴리스와 문서 배포
 
-라이브러리와 문서는 같은 Git 태그를 기준으로 배포합니다. 첫 릴리스 태그는 `0.1.0`입니다.
-`0.1.0`처럼 숫자 세 자리의 릴리스 태그를 게시하면 `.github/workflows/documentation.yml`이 실행됩니다.
-GitHub Actions에서 Xcode 27로 문서를 빌드하고 Pages에 artifact로 직접 배포합니다.
-생성된 HTML·JSON 파일을 Git에 커밋하거나 `gh-pages` 브랜치를 관리하지 않습니다.
+코드와 문서를 main에 반영한 뒤 `0.1.0` 형식의 버전 태그를 게시합니다.
+GitHub Actions의 **Publish DocC**가 Xcode 27에서 라이브러리와 DocC를 빌드하고
+GitHub Pages에 배포합니다. 모든 정식 버전 태그의 문서를 함께 생성하므로 이전 버전 주소도 유지됩니다.
 
-### 최초 설정
+- 워크플로: `.github/workflows/documentation.yml`
+- 배포 결과: Actions → Publish DocC
+- 문서 주소: `https://thebriancompany.github.io/swift-brian-ui/<버전>/documentation/brianui/`
+- 재배포: Actions → Publish DocC → Run workflow에서 main 선택
 
-저장소 Settings → Pages → Build and deployment → Source를 **GitHub Actions**로 설정합니다.
-`github-pages` environment에 배포 제한이 있다면 릴리스 태그의 배포를 허용해야 합니다.
-워크플로를 main에 게시한 다음, 그 커밋에 릴리스 태그를 생성합니다.
-
-### 릴리스와 재배포
-
-1. 릴리스할 코드와 문서를 main에 반영하고 검증합니다.
-2. 해당 커밋의 버전 태그를 GitHub에 게시합니다. 이미 배포한 태그는 이동하지 않습니다.
-3. Actions의 **Publish DocC** 실행 결과와 Pages URL을 확인합니다.
-4. 같은 태그로 GitHub Release를 게시합니다.
-
-재배포는 Actions → Publish DocC → Run workflow에서 main을 선택해 실행합니다.
-Swift tools 6.4가 필요하므로 `xcode-27` 러너를 사용합니다.
-
-### 버전 보존과 로컬 검증
-
-`scripts/build-documentation.py`는 모든 정식 버전 태그의 소스를 각각 빌드하여
-`.build/site/<버전>/`에 문서를 생성합니다. Pages는 배포할 때 사이트 전체를 교체하므로,
-이 방식으로 이전 버전 문서도 유지합니다. 버전이 많아지면 빌드 시간에 맞춰 캐시나
-별도 아카이브 저장소를 도입할 수 있습니다. 현재 작업 트리의 미커밋 변경은 포함하지 않습니다.
-
-```sh
-python3 scripts/build-documentation.py
-```
-
-SwiftUI에서 합성된 기본 구현은 `--skip-synthesized-members`로 제외합니다.
-공개 API와 DocC 문서의 링크는 `--warnings-as-errors`로 검증합니다.
-
-문서 주소: https://thebriancompany.github.io/swift-brian-ui/0.1.0/documentation/brianui/
+저장소의 Settings → Pages → Source는 **GitHub Actions**로 설정합니다.
+이미 게시한 릴리스 태그는 이동하지 않습니다.
