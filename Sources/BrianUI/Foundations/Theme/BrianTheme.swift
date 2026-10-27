@@ -1,6 +1,6 @@
 import Foundation
 
-/// BrianUI 컴포넌트가 공유하는 색상, 모서리, 간격, 글꼴 및 그림자 토큰입니다.
+/// BrianUI 컴포넌트가 공유하는 색상, 그라디언트, 모서리, 간격, 글꼴 및 그림자 토큰입니다.
 ///
 /// 별도 설정 없이 기본 테마를 사용합니다. 하위 뷰의 테마를 변경하려면
 /// `.environment(\.theme, theme)`을 적용합니다.
@@ -22,6 +22,8 @@ public struct BrianTheme: Hashable, Sendable {
   public var typography: TypographyToken
   /// 그림자 토큰입니다.
   public var shadow: ShadowToken
+  /// 히어로와 강조 영역에 사용하는 표현용 그라디언트 토큰입니다.
+  public var gradient: GradientToken
 
   /// 각 토큰을 직접 지정하는 테마를 만듭니다.
   ///
@@ -31,18 +33,21 @@ public struct BrianTheme: Hashable, Sendable {
   ///   - spacing: 간격입니다. 기본값은 `.default`입니다.
   ///   - typography: 글꼴입니다. 기본값은 `.default`입니다.
   ///   - shadow: 그림자입니다. 기본값은 `.default`입니다.
+  ///   - gradient: 표현용 그라디언트입니다. 기본값은 `.default`입니다.
   public init(
     color: ColorToken,
     radius: RadiusToken = .default,
     spacing: SpacingToken = .default,
     typography: TypographyToken = .default,
-    shadow: ShadowToken = .default
+    shadow: ShadowToken = .default,
+    gradient: GradientToken = .default
   ) {
     self.color = color
     self.radius = radius
     self.spacing = spacing
     self.typography = typography
     self.shadow = shadow
+    self.gradient = gradient
   }
 
   /// 팔레트로부터 의미별 색상 토큰을 구성하는 테마를 만듭니다.
@@ -51,17 +56,20 @@ public struct BrianTheme: Hashable, Sendable {
   ///   - palette: 색상 팔레트입니다. 기본 팔레트를 생략할 수 있습니다.
   ///   - brand: 브랜드 색상 스케일입니다. `nil`이면 팔레트의 기본 브랜드 구성을 사용합니다.
   ///   - shadow: 그림자 토큰입니다. 기본값은 `.default`입니다.
+  ///   - gradient: 브랜드 단색 팔레트와 독립적인 그라디언트 토큰입니다. 기본값은 `.default`입니다.
   public init(
     palette: ColorPalette = .default,
     brand: ColorPalette.Scale? = nil,
-    shadow: ShadowToken = .default
+    shadow: ShadowToken = .default,
+    gradient: GradientToken = .default
   ) {
     self.init(
       color: ColorToken(palette: palette, brand: brand),
       radius: .default,
       spacing: .default,
       typography: .default,
-      shadow: shadow
+      shadow: shadow,
+      gradient: gradient
     )
   }
 }

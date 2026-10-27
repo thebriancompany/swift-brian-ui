@@ -16,6 +16,7 @@ iOS 18 이상과 macOS 15 이상을 지원하며, 패키지 매니페스트는 S
 
 - <doc:GettingStarted>
 - <doc:Theming>
+- <doc:Gradients>
 - <doc:Forms>
 - <doc:Presentations>
 
@@ -24,12 +25,21 @@ iOS 18 이상과 macOS 15 이상을 지원하며, 패키지 매니페스트는 S
 - ``BrianTheme``
 - ``ColorPalette``
 - ``ColorToken``
+- ``GradientToken``
+- ``GradientPalette``
 - ``SpacingToken``
 - ``RadiusToken``
 - ``TypographyToken``
 - ``Typography``
 - ``ShadowToken``
 - ``Shadow``
+
+### 그라디언트 배경
+
+- ``BrianGradient``
+- ``SwiftUICore/View/gradientBackground(_:strength:)``
+- ``SwiftUICore/View/buttonGradient(_:)``
+- ``SwiftUICore/View/badgeGradient(_:)``
 
 ### 버튼과 피드백
 

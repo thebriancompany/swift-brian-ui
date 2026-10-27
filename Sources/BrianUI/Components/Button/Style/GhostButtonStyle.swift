@@ -28,7 +28,14 @@ public struct BrianGhostButtonStyle: ButtonStyle {
       .padding(.vertical, verticalPadding)
       .padding(.horizontal, horizontalPadding)
       .contentShape(shape)
-      .background(backgroundColor(isPressed: isPressed), in: shape)
+      .background {
+        if let gradient = property.gradient, isButtonActive {
+          ControlGradientFill(style: gradient, strength: .subtle, shape: shape, isPressed: isPressed)
+            .opacity(isPressed ? 1 : 0)
+        } else {
+          shape.fill(backgroundColor(isPressed: isPressed))
+        }
+      }
       .scaleEffect(isPressed ? 0.97 : 1)
       .animation(
         .interactiveSpring(
@@ -65,6 +72,9 @@ public struct BrianGhostButtonStyle: ButtonStyle {
   private var foregroundColor: Color {
     guard isButtonActive else {
       return theme.color.foreground.disabled
+    }
+    if property.gradient != nil {
+      return theme.color.foreground.primary
     }
     switch property.tone {
     case .brand: return theme.color.foreground.brand.normal

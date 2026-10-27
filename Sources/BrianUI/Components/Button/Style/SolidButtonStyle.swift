@@ -27,7 +27,14 @@ public struct BrianSolidButtonStyle: ButtonStyle {
       .foregroundStyle(foregroundColor)
       .padding(.vertical, verticalPadding)
       .padding(.horizontal, horizontalPadding)
-      .background(backgroundColor(isPressed: isPressed), in: shape)
+      .contentShape(shape)
+      .background {
+        if let gradient = property.gradient, isButtonActive {
+          ControlGradientFill(style: gradient, strength: .vivid, shape: shape, isPressed: isPressed)
+        } else {
+          shape.fill(backgroundColor(isPressed: isPressed))
+        }
+      }
       .scaleEffect(isPressed ? 0.97 : 1)
       .animation(
         .interactiveSpring(
@@ -64,6 +71,9 @@ public struct BrianSolidButtonStyle: ButtonStyle {
   private var foregroundColor: Color {
     guard isButtonActive else {
       return theme.color.foreground.disabled
+    }
+    if let gradient = property.gradient {
+      return theme.gradient[gradient].foreground
     }
     switch property.tone {
     case .brand: return theme.color.foreground.brand.solid
