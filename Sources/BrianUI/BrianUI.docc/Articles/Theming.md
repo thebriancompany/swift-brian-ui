@@ -4,7 +4,7 @@
 
 ## 테마 주입
 
-``BrianTheme``은 색상, 간격, 모서리, 글꼴, 그림자 토큰을 담습니다.
+``BrianTheme``은 색상, 그라디언트, 간격, 모서리, 글꼴, 그림자 토큰을 담습니다.
 기본 테마를 수정해서 특정 화면 또는 앱 루트에 주입할 수 있습니다.
 
 ```swift
@@ -44,10 +44,15 @@ private struct BrianThemeContent: View {
 토큰은 주입된 환경의 하위 뷰에서 읽습니다. 자체 화면을 만들 때도 의미에 맞는
 `theme.color.foreground`, `theme.color.background`와 간격 토큰을 사용하면 컴포넌트와 맞출 수 있습니다.
 
+히어로와 강조 카드에는 `theme.gradient`와 `gradientBackground(_:strength:)`를 사용합니다.
+팔레트 선택과 사용 예제는 <doc:Gradients>를 참고하세요.
+
 ## 컴포넌트 설정 범위
 
-`buttonProperty(_:)`는 크기와 색상 역할 전체를 교체합니다.
+`buttonProperty(_:)`는 크기, 색상 역할과 그라디언트 설정 전체를 교체합니다.
 `buttonSize(_:)`와 `buttonTone(_:)`은 해당 필드만 변경합니다.
+`buttonGradient(_:)`와 `badgeGradient(_:)`는 표현용 팔레트를 선택하고, `nil`로 해제합니다.
+이 설정은 크기·tone을 유지하며, 활성 상태에서는 tone보다 그라디언트가 우선합니다.
 부모 컨테이너에 적용하면 하위 버튼이 공유하고, 개별 버튼에서 더 가까운 설정을 적용할 수 있습니다.
 
 ```swift
