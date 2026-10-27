@@ -32,10 +32,24 @@ public struct BrianBadge: View {
     .foregroundStyle(foregroundColor)
     .padding(.horizontal, horizontalPadding)
     .padding(.vertical, theme.spacing.xSmall)
-    .background(backgroundColor, in: shape)
+    .background {
+      if let gradient = property.gradient, isEnabled, property.variant != .outline {
+        ControlGradientFill(
+          style: gradient,
+          strength: property.variant == .solid ? .vivid : .subtle,
+          shape: shape
+        )
+      } else {
+        shape.fill(backgroundColor)
+      }
+    }
     .overlay {
       if property.variant == .outline {
-        shape.strokeBorder(borderColor, lineWidth: 1)
+        if let gradient = property.gradient, isEnabled {
+          ControlGradientBorder(style: gradient, shape: shape)
+        } else {
+          shape.strokeBorder(borderColor, lineWidth: 1)
+        }
       }
     }
   }
@@ -95,6 +109,9 @@ public struct BrianBadge: View {
       return theme.color.foreground.disabled
     }
     let foreground = theme.color.foreground
+    if let gradient = property.gradient {
+      return property.variant == .solid ? theme.gradient[gradient].foreground : foreground.primary
+    }
     let role: ColorToken.Foreground.Role
     switch property.tone {
     case .neutral:
