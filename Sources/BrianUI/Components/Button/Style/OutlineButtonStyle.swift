@@ -28,7 +28,11 @@ public struct BrianOutlineButtonStyle: ButtonStyle {
       .background(backgroundColor(isPressed: isPressed), in: shape)
       .contentShape(shape)
       .overlay {
-        shape.strokeBorder(borderColor, lineWidth: 1)
+        if let gradient = property.gradient, isButtonActive {
+          ControlGradientBorder(style: gradient, shape: shape)
+        } else {
+          shape.strokeBorder(borderColor, lineWidth: 1)
+        }
       }
       .scaleEffect(isPressed ? 0.97 : 1)
       .animation(
@@ -66,6 +70,9 @@ public struct BrianOutlineButtonStyle: ButtonStyle {
   private var foregroundColor: Color {
     guard isButtonActive else {
       return theme.color.foreground.disabled
+    }
+    if property.gradient != nil {
+      return theme.color.foreground.primary
     }
 
     switch property.tone {
