@@ -54,6 +54,81 @@ struct BrianFormExample: View {
 읽기 전용은 `.textFieldReadOnly(true)`, `.textAreaReadOnly(true)`로 설정합니다.
 비활성화는 `.disabled(true)`를 사용합니다. 읽기 전용은 편집 대신 텍스트 표시를 사용합니다.
 
+## 칩으로 선택과 입력값 표시하기
+
+``BrianChip``에 `Binding<Bool>`을 전달하면 탭할 때 선택 여부를 반전합니다.
+단일 선택은 `Bool`과 액션을 전달하고, 액션에서 선택 ID를 갱신합니다.
+`removable:onRemove:`로 만든 입력 칩은 뒤쪽 삭제 버튼만 동작하며 실제 데이터 제거는 앱이 담당합니다.
+
+```swift
+import SwiftUI
+import BrianUI
+
+struct BrianChipExample: View {
+  @State private var includesSoldItems = false
+  @State private var category = "전체"
+  @State private var keywords = ["가구", "조명"]
+  @State private var sortByPrice = false
+
+  var body: some View {
+    VStack(alignment: .leading, spacing: 16) {
+      BrianChip(
+        "판매 완료 포함",
+        isSelected: $includesSoldItems,
+        prefix: .icon("checkmark")
+      )
+      .chipVariant(.outlineWeak)
+
+      ScrollView(.horizontal) {
+        HStack {
+          ForEach(["전체", "가구", "생활"], id: \.self) { item in
+            BrianChip(item, isSelected: category == item) {
+              category = item
+            }
+          }
+        }
+      }
+      .chipVariant(.outlineStrong)
+
+      HStack {
+        ForEach(keywords, id: \.self) { keyword in
+          BrianChip(removable: keyword, onRemove: {
+            keywords.removeAll { $0 == keyword }
+          })
+        }
+      }
+      .chipSize(.small)
+
+      BrianChip("가격순", suffixSystemImage: "chevron.down") {
+        sortByPrice.toggle()
+      }
+
+      BrianChip(isSelected: $sortByPrice) {
+        Label("가격순 정렬", systemImage: "arrow.up.arrow.down")
+          .labelStyle(.iconOnly)
+      }
+      .chipLayout(.iconOnly)
+
+      BrianChip("준비 중", isSelected: .constant(false))
+        .disabled(true)
+    }
+    .chipSize(.medium)
+    .padding()
+  }
+}
+```
+
+`chipSize(_:)`는 `.small`, `.medium`, `.large`를 지원합니다.
+`chipVariant(_:)`는 채움 스타일인 `.solid`, 선택하면 진하게 채우는 `.outlineStrong`,
+선택하면 옅은 배경과 진한 테두리를 표시하는 `.outlineWeak`를 지원합니다.
+여러 선택값을 함께 표시할 때는 `.outlineWeak`로 강조 정도를 낮출 수 있습니다.
+
+텍스트 앞에는 `prefix: .icon("star")`, `.avatar(Image("profile"))`, `.image(Image("thumbnail"))`을
+사용할 수 있습니다.
+
+커스텀 `label`로 배지 등 표시용 뷰를 조합할 수도 있습니다. 칩 내부에 별도 버튼을 넣지 마세요.
+여러 칩의 배치는 `HStack`, `ScrollView` 등으로 구성하고, 선택 개수 제한과 필터 초기화는 앱에서 처리합니다.
+
 ## 전체 선택과 수량 범위
 
 ``BrianCheckboxGroup``은 배치만 담당합니다. 전체 선택은 ``BrianCheckbox``의 `sources:`로 연결합니다.
