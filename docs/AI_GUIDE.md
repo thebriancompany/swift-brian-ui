@@ -24,6 +24,7 @@
 - 별도 설정 없이 기본 테마로 작동합니다. 커스텀 테마는 `.environment(\.theme, theme)`으로 주입합니다.
 - 일반 버튼은 SwiftUI `Button`에 `.buttonStyle(.solid)`, `.weak`, `.outline`, `.ghost`를 적용합니다. `BrianButton`이라는 뷰는 제공하지 않습니다.
 - 플로팅 버튼은 `.buttonStyle(.floating)`과 `floatingButton...` 수정자를 사용합니다.
+- 선택·제안·입력 칩은 `BrianChip`과 `chipSize(_:)`, `chipVariant(_:)`를 사용합니다. 아이콘 전용은 커스텀 레이블과 `chipLayout(.iconOnly)`를 함께 지정합니다.
 - 상태는 앱의 `@State`, 모델, 바인딩이 소유합니다. 사용자 입력에 `.constant`를 사용하면 변경값을 유지할 수 없습니다.
 - 색상과 간격은 가능한 한 `@Environment(\.theme)`에서 의미별 토큰을 읽어 사용합니다.
 - 표현용 다색 배경은 `.gradientBackground(.aurora, strength: .vivid)`처럼 사용합니다. 팔레트는 `.aurora`, `.sunset`, `.lagoon`, 강도는 `.subtle`, `.vivid`를 지원합니다. 기본값은 `.aurora`, `.subtle`입니다.
@@ -44,6 +45,9 @@
 | `BrianQuantityPicker` | 1씩 증감합니다. 범위 인자는 없으며 `isDecrementDisabled`, `isIncrementDisabled` 조건을 앱이 계산합니다. |
 | `BrianCheckboxGroup` | 배치용입니다. 전체 선택은 `BrianCheckbox(..., sources: [...])`로 바인딩을 연결합니다. |
 | `BrianCheckbox(sources:)` | 빈 컬렉션이면 선택되지 않은 비활성 상태입니다. |
+| `BrianChip(isSelected:)` | 바인딩이면 탭할 때 반전합니다. `Bool`과 액션을 전달하면 표시만 하며 상태 변경은 액션에서 처리합니다. |
+| `BrianChip(removable:onRemove:)` | 뒤쪽 삭제 버튼만 액션을 실행합니다. 실제 데이터와 칩 제거는 호출자가 처리합니다. |
+| `chipLayout(.iconOnly)` | 최소 너비를 아이콘에 맞춥니다. 텍스트를 자동으로 숨기지 않으므로 `Label`에는 `.labelStyle(.iconOnly)`를 함께 적용합니다. |
 | `BrianAlert`, `BrianBottomSheetContainer` | 콘텐츠 배치용입니다. 실제 표시는 각각 `alert`, `bottomSheet` 수정자로 연결합니다. |
 | `BrianAlertFooter` | 직접적인 액션 뷰 한 개 또는 두 개를 지원합니다. 세 개 이상의 액션이나 조건 분기 지원을 가정하지 마세요. |
 | `BrianAlertButton` | 기본적으로 알림 닫기 처리에 액션을 전달합니다. 유지해야 하면 `dismissOnAction: false`와 표시 바인딩을 사용합니다. |

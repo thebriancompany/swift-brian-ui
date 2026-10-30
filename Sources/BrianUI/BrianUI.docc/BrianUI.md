@@ -60,6 +60,9 @@ iOS 18 이상과 macOS 15 이상을 지원하며, 패키지 매니페스트는 S
 - ``BrianTextArea``
 - ``BrianCheckbox``
 - ``BrianCheckboxGroup``
+- ``BrianChip``
+- ``BrianChipLabel``
+- ``BrianChipProperty``
 - ``BrianSwitch``
 - ``BrianQuantityPicker``
 
