@@ -95,7 +95,7 @@ public struct BrianCallout: View {
   }
 
   private var content: some View {
-    HStack(alignment: .firstTextBaseline, spacing: theme.spacing.small) {
+    HStack(alignment: .center, spacing: theme.spacing.small) {
       if let systemImage {
         Image(systemName: systemImage)
           .symbolVariant(.fill)

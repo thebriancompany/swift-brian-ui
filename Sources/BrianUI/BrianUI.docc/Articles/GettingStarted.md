@@ -50,6 +50,7 @@ struct BrianWelcomeView: View {
 | 주·보조 액션 배치 | ``BrianButtonGroup`` | `primary`, `secondary` 클로저 |
 | 한 줄 / 여러 줄 입력 | ``BrianTextField``, ``BrianTextArea`` | 문자열 바인딩, 전용 수정자 |
 | 체크박스 / 전체 선택 | ``BrianCheckbox``, ``BrianCheckboxGroup`` | `isOn:` 또는 `sources:` |
+| 선택 / 제안 / 입력 칩 | ``BrianChip`` | `isSelected:`, `action:`, `onRemove:`, `chipVariant(_:)` |
 | 켜기 / 끄기 | ``BrianSwitch`` | `isOn:` |
 | 수량 조절 | ``BrianQuantityPicker`` | `quantity:`, 방향별 비활성화 조건 |
 | 상태 표시 | ``BrianBadge``, ``BrianCallout`` | 각 컴포넌트의 프로퍼티 수정자 |
