@@ -40,26 +40,34 @@ extension View {
 private struct BrianBottomSheetStage<Content: View>: View {
   @Environment(\.theme) private var theme
   @Environment(\.bottomSheetShowsHandle) private var showsHandle
+
   @Binding var isPresented: Bool
   let presentation: BrianBottomSheetPresentation
   let snapPoints: [BrianBottomSheetSnapPoint]
   let isDismissible: Bool
   let content: Content
+
   @State private var selectedHeight: CGFloat?
   @State private var drag: CGFloat = 0
+  @State private var restingSize: CGSize = .zero
+  @State private var restingBottomInset: CGFloat = 0
 
   var body: some View {
     GeometryReader { proxy in
-      let totalHeight = proxy.size.height + proxy.safeAreaInsets.bottom
+      let totalHeight = restingSize.height > 0
+        ? restingSize.height + restingBottomInset
+        : proxy.size.height + proxy.safeAreaInsets.bottom
+      let keyboardIsVisible = restingSize.height > proxy.size.height + 1 || proxy.safeAreaInsets.bottom > restingBottomInset + 1
       let maximum = max(0, min(totalHeight * 0.9, proxy.size.height))
+      let bottomInset = keyboardIsVisible ? 0 : restingBottomInset
       let heights = Array(
         Set(
           snapPoints.compactMap {
-            $0.resolved(in: totalHeight, maximum: maximum)
+            $0.resolved(in: totalHeight, maximum: max(0, totalHeight * 0.9))
           }
         )
       ).sorted()
-      let height = heights.isEmpty ? nil : min(selectedHeight ?? heights[0], maximum)
+      let height: CGFloat? = keyboardIsVisible ? nil : (heights.isEmpty ? nil : min(selectedHeight ?? heights[0], maximum))
 
       ZStack(alignment: .bottom) {
         theme.color.background.overlay
@@ -72,29 +80,20 @@ private struct BrianBottomSheetStage<Content: View>: View {
             }
           }
 
-        ViewThatFits(in: .vertical) {
-          if heights.isEmpty {
-            card(
-              heights: heights,
-              height: height,
-              bottomInset: proxy.safeAreaInsets.bottom
-            )
-            .fixedSize(horizontal: false, vertical: true)
-          }
-
+        BrianBottomSheetCardLayout(fitsContent: heights.isEmpty || keyboardIsVisible) {
           card(
             heights: heights,
             height: height,
-            bottomInset: proxy.safeAreaInsets.bottom
+            bottomInset: bottomInset
           )
         }
         .frame(maxWidth: 480)
         .frame(height: height.map { max(0, min(maximum, $0 - drag)) })
         .frame(maxHeight: maximum, alignment: .bottom)
         .offset(
-          y: presentation.isVisible ? (heights.isEmpty && isDismissible ? max(0, drag) : 0) : totalHeight
+          y: presentation.isVisible ? (height == nil && isDismissible ? max(0, drag) : 0) : totalHeight
         )
-        .padding(.bottom, -proxy.safeAreaInsets.bottom)
+        .padding(.bottom, -bottomInset)
         .onChange(of: heights) { _, newValue in
           selectedHeight = newValue.min(by: {
             abs($0 - (selectedHeight ?? 0)) < abs($1 - (selectedHeight ?? 0))
@@ -102,7 +101,7 @@ private struct BrianBottomSheetStage<Content: View>: View {
         }
         .modifier(
           BrianBottomSheetDragModifier(
-            isEnabled: isDismissible || heights.count > 1,
+            isEnabled: isDismissible || (!keyboardIsVisible && heights.count > 1),
             onChanged: { translation in
               dragChanged(translation, heights: heights, height: height)
             },
@@ -113,6 +112,18 @@ private struct BrianBottomSheetStage<Content: View>: View {
         )
       }
       .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+    }
+    .background {
+      GeometryReader { _ in
+        Color.clear
+          .onGeometryChange(for: CGSize.self, of: \.size) { size in
+            restingSize = size
+          }
+          .onGeometryChange(for: CGFloat.self, of: \.safeAreaInsets.bottom) { inset in
+            restingBottomInset = inset
+          }
+      }
+      .ignoresSafeArea(.keyboard)
     }
   }
 
@@ -174,5 +185,40 @@ private struct BrianBottomSheetStage<Content: View>: View {
         isPresented = false
       }
     }
+  }
+}
+
+private struct BrianBottomSheetCardLayout: Layout {
+  let fitsContent: Bool
+
+  func sizeThatFits(
+    proposal: ProposedViewSize,
+    subviews: Subviews,
+    cache: inout ()
+  ) -> CGSize {
+    guard let card = subviews.first else {
+      return .zero
+    }
+    guard fitsContent else {
+      return card.sizeThatFits(proposal)
+    }
+    let ideal = card.sizeThatFits(ProposedViewSize(width: proposal.width, height: nil))
+    return CGSize(
+      width: ideal.width,
+      height: min(ideal.height, proposal.height ?? ideal.height)
+    )
+  }
+
+  func placeSubviews(
+    in bounds: CGRect,
+    proposal: ProposedViewSize,
+    subviews: Subviews,
+    cache: inout ()
+  ) {
+    subviews.first?.place(
+      at: bounds.origin,
+      anchor: .topLeading,
+      proposal: ProposedViewSize(bounds.size)
+    )
   }
 }

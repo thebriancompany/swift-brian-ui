@@ -8,6 +8,8 @@ public struct BrianBottomSheetContainer<Content: View, Footer: View>: View {
   @Environment(\.bottomSheetHeaderAlignment) private var alignment
   @Environment(\.bottomSheetShowsCloseButton) private var showsCloseButton
   @Environment(\.bottomSheetIsPresented) private var isPresented
+  @State private var contentHeight: CGFloat?
+  @State private var viewportHeight: CGFloat = 0
   private let title: String?
   private let description: String?
   private let content: Content
@@ -46,15 +48,19 @@ public struct BrianBottomSheetContainer<Content: View, Footer: View>: View {
           .layoutPriority(1)
       }
 
-      ViewThatFits(in: .vertical) {
+      ScrollView {
         paddedContent
           .fixedSize(horizontal: false, vertical: true)
-
-        ScrollView {
-          paddedContent
-        }
-        .contentFog(.bottom, fraction: 0.08)
+          .onGeometryChange(for: CGFloat.self, of: \.size.height) { height in
+            contentHeight = height
+          }
       }
+      .scrollBounceBehavior(.basedOnSize)
+      .frame(idealHeight: contentHeight, maxHeight: contentHeight)
+      .onGeometryChange(for: CGFloat.self, of: \.size.height) { height in
+        viewportHeight = height
+      }
+      .contentFog(.bottom, fraction: (contentHeight ?? 0) > viewportHeight ? 0.08 : 0)
 
       if Footer.self != EmptyView.self {
         footer
