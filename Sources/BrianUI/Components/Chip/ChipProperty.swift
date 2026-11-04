@@ -1,15 +1,15 @@
 import SwiftUI
 
-/// 칩의 크기, 선택 상태 표현 방식과 콘텐츠 배치입니다.
+/// A chip's size, selection appearance, and content layout.
 public struct BrianChipProperty: Hashable, Sendable {
-  /// 칩의 최소 높이와 아이콘 크기입니다.
+  /// The chip's minimum height and icon size.
   public var size: Size
-  /// 선택 여부에 따른 배경과 테두리 표현입니다.
+  /// Background and border appearance based on selection.
   public var variant: Variant
-  /// 텍스트 포함 여부에 따른 최소 너비입니다.
+  /// The minimum width based on whether text is included.
   public var layout: Layout
 
-  /// 기본값은 `.medium`, `.solid`, `.withText`입니다.
+  /// Defaults to `.medium`, `.solid`, and `.withText`.
   public init(
     size: Size = .medium,
     variant: Variant = .solid,
@@ -22,31 +22,31 @@ public struct BrianChipProperty: Hashable, Sendable {
 }
 
 extension BrianChipProperty {
-  /// 칩의 크기입니다. 큰 글꼴에서는 콘텐츠에 맞춰 높이가 늘어납니다.
+  /// The chip size. With large fonts, height grows to fit the content.
   public enum Size: CaseIterable, Hashable, Sendable {
-    /// 최소 높이 32pt입니다.
+    /// A minimum height of 32 pt.
     case small
-    /// 최소 높이 36pt입니다.
+    /// A minimum height of 36 pt.
     case medium
-    /// 최소 높이 40pt입니다.
+    /// A minimum height of 40 pt.
     case large
   }
 
-  /// 칩의 선택 상태를 구분하는 스타일입니다.
+  /// A style that distinguishes a chip's selection state.
   public enum Variant: CaseIterable, Hashable, Sendable {
-    /// 옅은 배경을 사용하며, 선택하면 진한 배경으로 전환합니다.
+    /// Uses a subtle background, switching to a strong background when selected.
     case solid
-    /// 테두리를 사용하며, 선택하면 진한 배경으로 전환합니다.
+    /// Uses a border, switching to a strong background when selected.
     case outlineStrong
-    /// 테두리를 사용하며, 선택하면 옅은 배경과 진한 테두리로 강조합니다.
+    /// Uses a border, adding a subtle background and strong border when selected.
     case outlineWeak
   }
 
-  /// 칩 콘텐츠에 맞춘 배치입니다.
+  /// A layout suited to the chip's content.
   public enum Layout: CaseIterable, Hashable, Sendable {
-    /// 텍스트와 선택적인 앞뒤 콘텐츠를 표시합니다.
+    /// Displays text and optional leading and trailing content.
     case withText
-    /// 아이콘 하나를 표시합니다.
+    /// Displays a single icon.
     case iconOnly
   }
 }

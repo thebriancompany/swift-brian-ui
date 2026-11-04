@@ -2,11 +2,11 @@ import Foundation
 
 extension BrianSwitchProperty {
   public enum Size: CaseIterable, Hashable, Sendable {
-    /// 기본값 16
+    /// Defaults to 16.
     case small
-    /// 기본값 24
+    /// Defaults to 24.
     case medium
-    /// 기본값 32
+    /// Defaults to 32.
     case large
   }
 }

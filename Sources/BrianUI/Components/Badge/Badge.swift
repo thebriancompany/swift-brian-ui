@@ -17,7 +17,7 @@ public struct BrianBadge: View {
     self.imageStyle = .init(systemName: systemImage)
   }
 
-  /// BrianSymbols 아이콘을 지정합니다. `symbol`이 `nil`이면 아이콘을 표시하지 않습니다.
+  /// Specifies a BrianSymbols icon. Hides the icon when `symbol` is `nil`.
   public init(
     title: String,
     symbol: BrianSymbol?

@@ -1,13 +1,13 @@
 import SwiftUI
 
-/// 테마의 네 가지 색상을 곡선으로 혼합하는 정적인 메쉬 그라디언트 배경입니다.
+/// A static mesh gradient background that blends four theme colors along curves.
 ///
-/// 제안된 크기를 채우며 레이아웃 크기와 모서리 모양은 호출자가 정합니다.
-/// 장식용이므로 터치와 접근성 탐색에 참여하지 않습니다. 콘텐츠 색상까지 함께
-/// 적용하려면 `gradientBackground(_:strength:)` 수정자를 사용하세요.
+/// Fills the proposed size. The caller controls layout size and corner shape.
+/// Decorative only; excluded from touch handling and accessibility navigation. To apply
+/// a matching content color too, use the `gradientBackground(_:strength:)` modifier.
 ///
-/// 기본 테마와 팔레트의 바탕은 불투명합니다. 커스텀 색상의 불투명도는 보정하지 않습니다.
-/// 시스템의 대비 증가 설정에서는 단색으로 표시합니다. 애니메이션과 외부 이미지를 사용하지 않습니다.
+/// Default theme and palette bases are opaque. Custom color opacity is not adjusted.
+/// Uses a solid color with increased contrast. Does not use animation or external images.
 public struct BrianGradient: View {
   @Environment(\.theme) private var theme
   @Environment(\.colorSchemeContrast) private var contrast
@@ -15,14 +15,14 @@ public struct BrianGradient: View {
   private let style: GradientToken.Style
   private let strength: Strength
 
-  // 바탕의 밝기를 유지하면서 팔레트의 색조를 은은하게 더합니다.
+  // Add subtle palette hues while preserving the base brightness.
   private static let subtleBlendOpacity = 0.18
 
-  /// 테마에서 팔레트와 표현 강도를 선택합니다.
+  /// Selects a theme palette and intensity.
   ///
   /// - Parameters:
-  ///   - style: 팔레트 이름입니다. 기본값은 `.aurora`입니다.
-  ///   - strength: `.subtle`은 카드용 은은한 배경, `.vivid`는 선명한 커버 배경입니다.
+  ///   - style: The palette name. Defaults to `.aurora`.
+  ///   - strength: `.subtle` is a soft card background; `.vivid` is a vivid cover background.
   public init(_ style: GradientToken.Style = .aurora, strength: Strength = .subtle) {
     self.style = style
     self.strength = strength
@@ -63,11 +63,11 @@ public struct BrianGradient: View {
 }
 
 extension BrianGradient {
-  /// 그라디언트 배경의 표현 강도입니다.
+  /// The intensity of a gradient background.
   public enum Strength: CaseIterable, Hashable, Sendable {
-    /// 테마의 elevated 배경 위에 그라디언트를 18%로 혼합합니다.
+    /// Blends the gradient at 18% over the theme's elevated background.
     case subtle
-    /// 팔레트의 색상을 그대로 사용합니다.
+    /// Uses the palette colors directly.
     case vivid
   }
 }

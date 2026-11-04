@@ -1,14 +1,14 @@
-# BrianSymbols 아이콘 사용하기
+# Using BrianSymbols Icons
 
-BrianUI는 BrianSymbols를 의존성으로 연결하며, 기본 컨트롤의 체크·닫기·증감 아이콘에 사용합니다.
-기존 SF Symbols 이름을 받는 API도 사용할 수 있습니다. 이 문서는 현재 체크아웃의 API를 설명하며
-README에 연결된 이전 릴리스에는 새 API가 포함되지 않을 수 있습니다.
+BrianUI depends on BrianSymbols and uses it for check, close, increment, and decrement icons in standard controls.
+APIs accepting SF Symbols names remain available. This article describes the current checkout;
+earlier releases linked from the README may not include new APIs.
 
-## 이미지와 컴포넌트에 적용하기
+## Applying icons to images and components
 
-`Image(symbol:)`은 BrianSymbols 이미지를 만들고, `Image(style:)`은
-`.symbol(BrianSymbol)`과 `.system(String)` 중 하나를 선택합니다.
-컴포넌트의 선택적 아이콘 인자에 `nil`을 전달하면 아이콘을 표시하지 않습니다.
+`Image(symbol:)` creates a BrianSymbols image, while `Image(style:)` selects between
+`.symbol(BrianSymbol)` and `.system(String)`.
+Pass `nil` to an optional component icon argument to hide the icon.
 
 ```swift
 import SwiftUI
@@ -23,14 +23,14 @@ struct BrianSymbolsExample: View {
 
       Image(style: .system("star"))
 
-      BrianBadge(title: "완료", symbol: .checkmark)
+      BrianBadge(title: "Done", symbol: .checkmark)
 
-      BrianCallout("저장했습니다.", icon: .checkmark)
+      BrianCallout("Saved.", icon: .checkmark)
 
-      BrianMenuItem(title: "추가", symbol: .plus) {}
+      BrianMenuItem(title: "Add", symbol: .plus) {}
 
       BrianChip(
-        "선택",
+        "Select",
         isSelected: $isSelected,
         prefix: .icon(.symbol(.checkmark)),
         suffixSymbol: .chevronDown
@@ -40,23 +40,23 @@ struct BrianSymbolsExample: View {
 }
 ```
 
-타입 추론으로 `.checkmark` 등을 전달할 때는 `import BrianUI`로 사용할 수 있습니다.
-`BrianSymbol` 타입을 직접 선언하거나 `BrianSymbol.allCases`에 접근하는 코드는
-`BrianSymbols` 제품을 앱 타깃의 의존성에 추가하고 `import BrianSymbols`를 사용하세요.
-심볼 목록은 BrianSymbols의 `BrianSymbol` 선언에서 확인합니다.
+With type inference, values such as `.checkmark` are available through `import BrianUI`.
+For code that declares the `BrianSymbol` type directly or accesses `BrianSymbol.allCases`,
+add the `BrianSymbols` product to the app target's dependencies and use `import BrianSymbols`.
+See the `BrianSymbol` declaration in BrianSymbols for the symbol list.
 
-## 컴포넌트별 인자
+## Component arguments
 
-| 컴포넌트 | BrianSymbols | SF Symbols |
+| Component | BrianSymbols | SF Symbols |
 | --- | --- | --- |
 | `BrianBadge`, `BrianMenuItem` | `symbol:` | `systemImage:` |
 | `BrianCallout` | `icon:` | `systemImage:` |
-| `BrianChipLabel`, 텍스트 기반 `BrianChip` | `suffixSymbol:` | `suffixSystemImage:` |
-| 칩의 앞쪽 장식 | `prefix: .icon(.symbol(.checkmark))` | `prefix: .icon(.system("star"))` |
+| `BrianChipLabel`, text-based `BrianChip` | `suffixSymbol:` | `suffixSystemImage:` |
+| Chip prefix | `prefix: .icon(.symbol(.checkmark))` | `prefix: .icon(.system("star"))` |
 
-콜아웃은 표시 전용, `action:`, `onDismiss:` 초기화 모두 `icon:`을 지원합니다.
-칩의 `suffixSymbol:`은 선택 바인딩과 액션 초기화에서 사용할 수 있습니다.
-삭제 가능한 칩은 기본 닫기 아이콘을 사용합니다.
+Callouts support `icon:` in display-only, `action:`, and `onDismiss:` initializers.
+Chips support `suffixSymbol:` in selection-binding and action initializers.
+Removable chips use the default close icon.
 
-기존 `prefix: .icon("star")` 호출은 SF Symbols 아이콘으로 유지됩니다.
-새 코드에서는 `.symbol(...)` 또는 `.system(...)`으로 아이콘 종류를 명시할 수 있습니다.
+Existing `prefix: .icon("star")` calls continue to use SF Symbols.
+New code can specify the icon source explicitly with `.symbol(...)` or `.system(...)`.

@@ -102,7 +102,7 @@ extension BrianButtonGroupLayout {
     )
   }
 
-  /// Secondary -> Primary 순으로 배치
+  /// Arranges secondary before primary.
   private func placeHorizontally(
     in bounds: CGRect,
     primary: LayoutSubview,
@@ -145,7 +145,7 @@ extension BrianButtonGroupLayout {
     )
   }
 
-  /// Primary -> Secondary 순으로 배치
+  /// Arranges primary before secondary.
   private func placeVertically(
     in bounds: CGRect,
     primary: LayoutSubview,

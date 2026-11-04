@@ -1,23 +1,23 @@
 import SwiftUI
 
-/// 하나의 표현용 그라디언트에 사용하는 네 가지 색상과 콘텐츠 색상입니다.
+/// Four background colors and a content color for an expressive gradient.
 ///
-/// 상태를 전달하는 의미별 색상과 별개로 사용합니다. 커스텀 팔레트는 모든 배경
-/// 색상 위에서 `foreground`가 읽히도록 구성하고 라이트·다크 모드를 함께 확인하세요.
-/// 색상의 불투명도는 보정하지 않습니다. 반투명 색상은 실제 배치할 표면 위에서 대비를 확인하세요.
+/// Use separately from semantic status colors. Configure custom palettes so `foreground`
+/// remains readable over every background color, and check both light and dark modes.
+/// Color opacity is not adjusted. Check translucent colors for contrast over their actual surface.
 public struct GradientPalette: Hashable, Sendable {
-  /// 왼쪽 위에서 시작하는 색상입니다.
+  /// The color starting at the top left.
   public var start: Color
-  /// 위쪽과 왼쪽 아래를 연결하는 색상이며, 대비 증가 시 단색 배경으로도 사용합니다.
+  /// The color connecting the top and bottom left, also used as a solid background with increased contrast.
   public var middle: Color
-  /// 오른쪽 아래로 이어지는 색상입니다.
+  /// The color extending toward the bottom right.
   public var end: Color
-  /// 중앙에 부드럽게 번지는 색상입니다.
+  /// The color softly spreading through the center.
   public var highlight: Color
-  /// 선명한 그라디언트 배경 위에 사용하는 콘텐츠 색상입니다.
+  /// The content color used over a vivid gradient background.
   public var foreground: Color
 
-  /// 배경색과 그 위에 표시할 콘텐츠 색상을 함께 지정합니다.
+  /// Specifies background colors and the content color displayed over them together.
   public init(
     start: Color,
     middle: Color,
@@ -32,9 +32,9 @@ public struct GradientPalette: Hashable, Sendable {
     self.foreground = foreground
   }
 
-  /// 아이콘이나 장식 테두리에 사용할 수 있는 대각선 선형 그라디언트입니다.
+  /// A diagonal linear gradient for icons or decorative borders.
   ///
-  /// 본문이나 상태 표시의 유일한 색상으로 사용하지 마세요. 배경과의 대비는 호출자가 확인합니다.
+  /// Do not use as the sole color for body text or status indicators. The caller checks background contrast.
   public var linearGradient: LinearGradient {
     LinearGradient(
       colors: [start, middle, end],

@@ -1,11 +1,11 @@
 import SwiftUI
 
-/// 내부 컨텐츠의 크기에 따라 레이아웃이 변경되는 버튼 그룹 컴포넌트입니다.
+/// A button group that adapts its layout to the size of its content.
 ///
-/// 두 버튼의 이상적인 너비가 주어진 폭에 들어가면 가로로, 그렇지 않으면 세로로 배치합니다.
-/// 가로 배치는 secondary → primary, 세로 배치는 primary → secondary 순서입니다.
+/// Arranges horizontally when both buttons' ideal widths fit the available width, otherwise vertically.
+/// Horizontal order is secondary → primary; vertical order is primary → secondary.
 ///
-/// 버튼을 추가할 때는 내부 영역을 infinite로 설정하여 컨텐츠를 꽉 채우는 것을 권장합니다.
+/// When adding buttons, give their content an infinite maximum width to fill the available space.
 ///
 /// ```swift
 /// BrianButtonGroup {

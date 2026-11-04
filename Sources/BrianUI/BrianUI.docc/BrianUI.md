@@ -1,18 +1,18 @@
 # ``BrianUI``
 
-SwiftUI 앱에서 일관된 테마와 컴포넌트를 사용하는 Brian Design System입니다.
+Brian Design System provides consistent themes and components for SwiftUI apps.
 
 ## Overview
 
-iOS 18 이상과 macOS 15 이상을 지원하며, 패키지 매니페스트는 Swift tools 6.4를 요구합니다.
-`import BrianUI` 후 기본 테마로 바로 사용할 수 있습니다.
+Supports iOS 18 or later and macOS 15 or later. The package manifest requires Swift tools 6.4.
+Import `BrianUI` to start using the default theme immediately.
 
-버튼은 SwiftUI `Button`에 BrianUI 스타일을 적용하고, 입력과 선택 컨트롤은
-`Brian` 접두사가 붙은 컴포넌트를 사용합니다. 상태는 호출자가 소유하고 바인딩으로 전달합니다.
+Apply BrianUI styles to SwiftUI `Button` views. For input and selection controls,
+use components with the `Brian` prefix. The caller owns state and passes it through bindings.
 
 ## Topics
 
-### 시작하기
+### Getting started
 
 - <doc:GettingStarted>
 - <doc:Theming>
@@ -21,7 +21,7 @@ iOS 18 이상과 macOS 15 이상을 지원하며, 패키지 매니페스트는 S
 - <doc:Forms>
 - <doc:Presentations>
 
-### 테마와 토큰
+### Themes and tokens
 
 - ``BrianTheme``
 - ``ColorPalette``
@@ -35,14 +35,14 @@ iOS 18 이상과 macOS 15 이상을 지원하며, 패키지 매니페스트는 S
 - ``ShadowToken``
 - ``Shadow``
 
-### 그라디언트 배경
+### Gradient backgrounds
 
 - ``BrianGradient``
 - ``SwiftUICore/View/gradientBackground(_:strength:)``
 - ``SwiftUICore/View/buttonGradient(_:)``
 - ``SwiftUICore/View/badgeGradient(_:)``
 
-### 버튼과 피드백
+### Buttons and feedback
 
 - ``BrianSolidButtonStyle``
 - ``BrianWeakButtonStyle``
@@ -55,7 +55,7 @@ iOS 18 이상과 macOS 15 이상을 지원하며, 패키지 매니페스트는 S
 - ``BrianCallout``
 - ``BrianLoadingSpinner``
 
-### 입력과 선택
+### Input and selection
 
 - ``BrianTextField``
 - ``BrianTextArea``
@@ -67,7 +67,7 @@ iOS 18 이상과 macOS 15 이상을 지원하며, 패키지 매니페스트는 S
 - ``BrianSwitch``
 - ``BrianQuantityPicker``
 
-### 알림과 메뉴
+### Alerts and menus
 
 - ``BrianAlert``
 - ``BrianAlertButton``

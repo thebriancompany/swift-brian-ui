@@ -112,7 +112,7 @@ public struct BrianCheckboxIcon: View {
   }
 }
 
-/// Typography의 한 줄 높이로 정사각형을 구성합니다.
+/// Creates a square using the typography's single-line height.
 private struct BrianCheckmarkLayout: Layout {
   func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
     let height = subviews.first?.sizeThatFits(.unspecified).height ?? .zero

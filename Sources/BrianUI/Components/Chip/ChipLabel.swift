@@ -1,7 +1,7 @@
 import BrianSymbols
 import SwiftUI
 
-/// 칩의 한 줄 텍스트와 선택적인 앞뒤 장식을 배치합니다.
+/// Lays out a chip's single-line text and optional leading and trailing decorations.
 public struct BrianChipLabel: View {
   @Environment(\.theme) private var theme
   @Environment(\.chipProperty) private var property
@@ -10,23 +10,23 @@ public struct BrianChipLabel: View {
   private let prefix: Prefix?
   private let suffixImageStyle: Image.Style?
 
-  /// 텍스트 앞에 표시할 장식입니다.
+  /// A decoration displayed before the text.
   public enum Prefix {
-    /// BrianSymbols 또는 SF Symbols 아이콘입니다.
+    /// A BrianSymbols or SF Symbols icon.
     case icon(Image.Style)
 
-    /// 기존 문자열 이름으로 SF Symbols 아이콘을 지정합니다.
+    /// Specifies an SF Symbols icon using a legacy string name.
     public static func icon(_ systemName: String) -> Self {
       .icon(.system(systemName))
     }
 
-    /// 원형으로 자른 아바타입니다.
+    /// An avatar clipped to a circle.
     case avatar(Image)
-    /// 둥근 사각형으로 자른 이미지입니다.
+    /// An image clipped to a rounded rectangle.
     case image(Image)
   }
 
-  /// 텍스트와 선택적인 앞쪽 장식, 뒤쪽 SF Symbols 아이콘을 지정합니다.
+  /// Specifies text, an optional leading decoration, and a trailing SF Symbols icon.
   public init(
     _ title: String,
     prefix: Prefix? = nil,
@@ -37,9 +37,9 @@ public struct BrianChipLabel: View {
     self.suffixImageStyle = .init(systemName: suffixSystemImage)
   }
 
-  /// 텍스트와 선택적인 앞쪽 장식, 뒤쪽 BrianSymbols 아이콘을 지정합니다.
+  /// Specifies text, an optional leading decoration, and a trailing BrianSymbols icon.
   ///
-  /// `suffixSymbol`이 `nil`이면 뒤쪽 아이콘을 표시하지 않습니다.
+  /// Hides the trailing icon when `suffixSymbol` is `nil`.
   public init(
     _ title: String,
     prefix: Prefix? = nil,

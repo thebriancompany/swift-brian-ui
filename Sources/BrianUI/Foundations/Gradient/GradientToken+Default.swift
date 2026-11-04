@@ -1,10 +1,10 @@
 import SwiftUI
 
 extension GradientToken {
-  /// 라이트 모드의 밝은 색과 다크 모드의 깊은 색을 함께 제공하는 기본 토큰입니다.
+  /// Default tokens providing bright colors in light mode and deep colors in dark mode.
   ///
-  /// 브랜드의 단색 팔레트와 독립적으로 구성됩니다. 브랜드에 맞게 바꾸려면
-  /// `theme.gradient` 또는 개별 팔레트를 교체하세요.
+  /// Configured independently of the solid brand palette. To match your brand,
+  /// replace `theme.gradient` or individual palettes.
   public static let `default` = Self(
     aurora: .init(
       start: .adaptive(light: 0x73DDFA, dark: 0x124D61),
