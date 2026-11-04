@@ -1,3 +1,4 @@
+import BrianSymbols
 import SwiftUI
 
 /// 정수 수량을 한 번에 1씩 늘리거나 줄이는 컨트롤입니다.
@@ -32,7 +33,7 @@ public struct BrianQuantityPicker: View {
       BrianQuantityPickerButton {
         quantity -= 1
       } label: {
-        Image(systemName: "minus")
+        Image(symbol: .minus)
       }
       .disabled(isDecrementDisabled)
 
@@ -48,7 +49,7 @@ public struct BrianQuantityPicker: View {
       BrianQuantityPickerButton {
         quantity += 1
       } label: {
-        Image(systemName: "plus")
+        Image(symbol: .plus)
       }
       .disabled(isIncrementDisabled)
     }

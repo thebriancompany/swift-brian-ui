@@ -1,3 +1,4 @@
+import BrianSymbols
 import SwiftUI
 
 /// 선택값, 제안 액션 또는 삭제 가능한 입력값을 표시하는 캡슐 모양 컨트롤입니다.
@@ -69,7 +70,7 @@ public struct BrianChip<Label: View>: View {
         label
 
         Button(action: onRemove) {
-          Image(systemName: "xmark")
+          Image(symbol: .xmark)
             .font(.system(size: property.size.suffixIconSize, weight: .medium))
             .frame(width: property.size.suffixIconSize)
             .padding(.horizontal, theme.spacing.medium / 2)
@@ -107,6 +108,35 @@ extension BrianChip where Label == BrianChipLabel {
   ) {
     self.init(isSelected: isSelected, action: action) {
       BrianChipLabel(title, prefix: prefix, suffixSystemImage: suffixSystemImage)
+    }
+  }
+
+  /// 뒤쪽 BrianSymbols 아이콘을 표시하고 선택 바인딩을 반전하는 칩을 만듭니다.
+  ///
+  /// `suffixSymbol`이 `nil`이면 뒤쪽 아이콘을 표시하지 않습니다.
+  public init(
+    _ title: String,
+    isSelected: Binding<Bool>,
+    prefix: BrianChipLabel.Prefix? = nil,
+    suffixSymbol: BrianSymbol?
+  ) {
+    self.init(isSelected: isSelected) {
+      BrianChipLabel(title, prefix: prefix, suffixSymbol: suffixSymbol)
+    }
+  }
+
+  /// 뒤쪽 BrianSymbols 아이콘을 표시하고 액션을 실행하는 칩을 만듭니다.
+  ///
+  /// `isSelected`는 표시 전용이며 `suffixSymbol`이 `nil`이면 아이콘을 숨깁니다.
+  public init(
+    _ title: String,
+    isSelected: Bool = false,
+    prefix: BrianChipLabel.Prefix? = nil,
+    suffixSymbol: BrianSymbol?,
+    action: @escaping () -> Void
+  ) {
+    self.init(isSelected: isSelected, action: action) {
+      BrianChipLabel(title, prefix: prefix, suffixSymbol: suffixSymbol)
     }
   }
 

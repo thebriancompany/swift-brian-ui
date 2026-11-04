@@ -1,3 +1,4 @@
+import BrianSymbols
 import SwiftUI
 
 /// 바텀 시트의 제목, 본문 및 하단 액션을 배치하는 컨테이너입니다.
@@ -120,7 +121,7 @@ public struct BrianBottomSheetContainer<Content: View, Footer: View>: View {
     Button {
       isPresented?.wrappedValue = false
     } label: {
-      Image(systemName: "xmark")
+      Image(symbol: .xmark)
         .renderingMode(.template)
         .foregroundStyle(theme.color.foreground.primary)
         .frame(width: 20, height: 20)
