@@ -1,3 +1,4 @@
+import BrianSymbols
 import SwiftUI
 
 public struct BrianCallout: View {
@@ -7,7 +8,7 @@ public struct BrianCallout: View {
 
   private let description: String
   private let title: String?
-  private let systemImage: String?
+  private let imageStyle: Image.Style?
   private let link: Link?
   private let interaction: Interaction
 
@@ -35,7 +36,7 @@ public struct BrianCallout: View {
   ) {
     self.description = description
     self.title = title
-    self.systemImage = systemImage
+    self.imageStyle = .init(systemName: systemImage)
     self.link = link
     self.interaction = .display
   }
@@ -48,7 +49,7 @@ public struct BrianCallout: View {
   ) {
     self.description = description
     self.title = title
-    self.systemImage = systemImage
+    self.imageStyle = .init(systemName: systemImage)
     self.link = nil
     self.interaction = .actionable(action)
   }
@@ -62,7 +63,50 @@ public struct BrianCallout: View {
   ) {
     self.description = description
     self.title = title
-    self.systemImage = systemImage
+    self.imageStyle = .init(systemName: systemImage)
+    self.link = link
+    self.interaction = .dismissible(onDismiss)
+  }
+
+  /// BrianSymbols 아이콘을 지정합니다. `icon`이 `nil`이면 아이콘을 표시하지 않습니다.
+  public init(
+    _ description: String,
+    title: String? = nil,
+    icon: BrianSymbol?,
+    link: Link? = nil
+  ) {
+    self.description = description
+    self.title = title
+    self.imageStyle = .init(symbol: icon)
+    self.link = link
+    self.interaction = .display
+  }
+
+  /// BrianSymbols 아이콘을 지정합니다. `icon`이 `nil`이면 아이콘을 표시하지 않습니다.
+  public init(
+    _ description: String,
+    title: String? = nil,
+    icon: BrianSymbol?,
+    action: @escaping () -> Void
+  ) {
+    self.description = description
+    self.title = title
+    self.imageStyle = .init(symbol: icon)
+    self.link = nil
+    self.interaction = .actionable(action)
+  }
+
+  /// BrianSymbols 아이콘을 지정합니다. `icon`이 `nil`이면 아이콘을 표시하지 않습니다.
+  public init(
+    _ description: String,
+    title: String? = nil,
+    icon: BrianSymbol?,
+    link: Link? = nil,
+    onDismiss: @escaping () -> Void
+  ) {
+    self.description = description
+    self.title = title
+    self.imageStyle = .init(symbol: icon)
     self.link = link
     self.interaction = .dismissible(onDismiss)
   }
@@ -96,8 +140,8 @@ public struct BrianCallout: View {
 
   private var content: some View {
     HStack(alignment: .center, spacing: theme.spacing.small) {
-      if let systemImage {
-        Image(systemName: systemImage)
+      if let imageStyle {
+        Image(style: imageStyle)
           .symbolVariant(.fill)
       }
 
@@ -112,13 +156,13 @@ public struct BrianCallout: View {
 
       case let .actionable(action):
         Button(action: action) {
-          Image(systemName: "chevron.right")
+          Image(symbol: .chevronRight)
         }
         .buttonStyle(CalloutInteractionButtonStyle())
 
       case let .dismissible(onDismiss):
         Button(action: onDismiss) {
-          Image(systemName: "xmark")
+          Image(symbol: .xmark)
         }
         .buttonStyle(CalloutInteractionButtonStyle())
       }

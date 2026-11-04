@@ -1,0 +1,15 @@
+{
+  "originHash" : "e519f809f892e7a1563609b7f7430cd7ec4ce7eff8300fefd8799335cefbad64",
+  "pins" : [
+    {
+      "identity" : "swift-brian-symbols",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/thebriancompany/swift-brian-symbols",
+      "state" : {
+        "branch" : "main",
+        "revision" : "c7b0710618328f44cc47edefc7a5744333f3c45a"
+      }
+    }
+  ],
+  "version" : 3
+}

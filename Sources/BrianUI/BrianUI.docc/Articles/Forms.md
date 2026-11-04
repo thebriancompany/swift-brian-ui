@@ -75,7 +75,7 @@ struct BrianChipExample: View {
       BrianChip(
         "판매 완료 포함",
         isSelected: $includesSoldItems,
-        prefix: .icon("checkmark")
+        prefix: .icon(.symbol(.checkmark))
       )
       .chipVariant(.outlineWeak)
 
@@ -123,8 +123,8 @@ struct BrianChipExample: View {
 선택하면 옅은 배경과 진한 테두리를 표시하는 `.outlineWeak`를 지원합니다.
 여러 선택값을 함께 표시할 때는 `.outlineWeak`로 강조 정도를 낮출 수 있습니다.
 
-텍스트 앞에는 `prefix: .icon("star")`, `.avatar(Image("profile"))`, `.image(Image("thumbnail"))`을
-사용할 수 있습니다.
+텍스트 앞에는 `prefix: .icon(.system("star"))`, `.avatar(Image("profile"))`, `.image(Image("thumbnail"))`을
+사용할 수 있습니다. BrianSymbols와 뒤쪽 아이콘은 <doc:Symbols>를 참고하세요.
 
 커스텀 `label`로 배지 등 표시용 뷰를 조합할 수도 있습니다. 칩 내부에 별도 버튼을 넣지 마세요.
 여러 칩의 배치는 `HStack`, `ScrollView` 등으로 구성하고, 선택 개수 제한과 필터 초기화는 앱에서 처리합니다.
