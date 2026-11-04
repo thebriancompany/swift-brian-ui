@@ -14,9 +14,15 @@ let package = Package(
       targets: ["BrianUI"]
     ),
   ],
+  dependencies: [
+    .package(url: "https://github.com/thebriancompany/swift-brian-symbols", branch: "main"),
+  ],
   targets: [
     .target(
       name: "BrianUI",
+      dependencies: [
+        .product(name: "BrianSymbols", package: "swift-brian-symbols")
+      ]
     ),
   ]
 )
