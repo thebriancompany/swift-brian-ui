@@ -15,7 +15,7 @@ let package = Package(
     ),
   ],
   dependencies: [
-    .package(url: "https://github.com/thebriancompany/swift-brian-symbols", branch: "main"),
+    .package(url: "https://github.com/thebriancompany/swift-brian-symbols", exact: "0.1.0"),
   ],
   targets: [
     .target(
