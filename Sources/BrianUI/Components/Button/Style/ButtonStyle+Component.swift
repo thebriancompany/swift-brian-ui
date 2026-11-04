@@ -1,40 +1,40 @@
 import SwiftUI
 
 extension ButtonStyle where Self == BrianGhostButtonStyle {
-  /// SwiftUI `Button`에 적용하는 배경 강조를 줄인 버튼 스타일입니다.
+  /// A button style with reduced background emphasis for SwiftUI `Button`.
   ///
-  /// `.buttonStyle(.ghost)`으로 사용하고, `buttonSize(_:)`와 `buttonTone(_:)`으로 조정합니다.
-  /// `buttonGradient(_:)`를 추가하면 눌렀을 때만 은은한 그라디언트를 표시합니다.
+  /// Use `.buttonStyle(.ghost)` and adjust with `buttonSize(_:)` and `buttonTone(_:)`.
+  /// Adding `buttonGradient(_:)` shows a subtle gradient only while pressed.
   public static var ghost: BrianGhostButtonStyle {
     .init()
   }
 }
 
 extension ButtonStyle where Self == BrianOutlineButtonStyle {
-  /// SwiftUI `Button`에 적용하는 테두리로 구분하는 버튼 스타일입니다.
+  /// A bordered button style for SwiftUI `Button`.
   ///
-  /// `.buttonStyle(.outline)`으로 사용하고, `buttonSize(_:)`와 `buttonTone(_:)`으로 조정합니다.
-  /// `buttonGradient(_:)`를 추가하면 그라디언트 테두리를 사용합니다.
+  /// Use `.buttonStyle(.outline)` and adjust with `buttonSize(_:)` and `buttonTone(_:)`.
+  /// Adding `buttonGradient(_:)` uses a gradient border.
   public static var outline: BrianOutlineButtonStyle {
     .init()
   }
 }
 
 extension ButtonStyle where Self == BrianSolidButtonStyle {
-  /// SwiftUI `Button`에 적용하는 채워진 배경으로 강조하는 버튼 스타일입니다.
+  /// A filled button style that emphasizes SwiftUI `Button`.
   ///
-  /// `.buttonStyle(.solid)`으로 사용하고, `buttonSize(_:)`와 `buttonTone(_:)`으로 조정합니다.
-  /// `buttonGradient(_:)`를 추가하면 선명한 그라디언트 배경을 사용합니다.
+  /// Use `.buttonStyle(.solid)` and adjust with `buttonSize(_:)` and `buttonTone(_:)`.
+  /// Adding `buttonGradient(_:)` uses a vivid gradient background.
   public static var solid: BrianSolidButtonStyle {
     .init()
   }
 }
 
 extension ButtonStyle where Self == BrianWeakButtonStyle {
-  /// SwiftUI `Button`에 적용하는 약한 배경색을 사용하는 버튼 스타일입니다.
+  /// A subtle background button style for SwiftUI `Button`.
   ///
-  /// `.buttonStyle(.weak)`으로 사용하고, `buttonSize(_:)`와 `buttonTone(_:)`으로 조정합니다.
-  /// `buttonGradient(_:)`를 추가하면 은은한 그라디언트 배경을 사용합니다.
+  /// Use `.buttonStyle(.weak)` and adjust with `buttonSize(_:)` and `buttonTone(_:)`.
+  /// Adding `buttonGradient(_:)` uses a subtle gradient background.
   public static var weak: BrianWeakButtonStyle {
     .init()
   }

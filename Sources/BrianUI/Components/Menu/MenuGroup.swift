@@ -5,10 +5,10 @@ public struct BrianMenuGroup<Content: View>: View {
   private let title: String?
   private let content: Content
 
-  /// 메뉴 그룹을 만듭니다.
+  /// Creates a menu group.
   /// - Parameters:
-  ///   - title: 동작 없이 표시할 그룹 제목입니다. `nil`이면 생략합니다.
-  ///   - content: 그룹에 속한 항목입니다. 빈 콘텐츠는 제목만 표시합니다.
+  ///   - title: A noninteractive group title. Omitted when `nil`.
+  ///   - content: The group's items. Empty content displays only the title.
   public init(
     _ title: String? = nil,
     @ViewBuilder content: () -> Content

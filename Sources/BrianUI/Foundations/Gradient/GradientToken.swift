@@ -1,24 +1,24 @@
 import Foundation
 
-/// 히어로, 콘텐츠 커버와 강조 카드에 사용하는 다색 그라디언트 토큰입니다.
+/// Multicolor gradient tokens for heroes, content covers, and highlighted cards.
 ///
-/// 성공·경고·오류 등의 상태는 기존 ``ColorToken``으로 표현합니다.
+/// Use existing ``ColorToken`` values for states such as success, warning, and error.
 public struct GradientToken: Hashable, Sendable {
-  /// 시안, 블루, 라일락과 핑크가 섞이는 팔레트입니다.
+  /// A palette blending cyan, blue, lilac, and pink.
   public var aurora: GradientPalette
-  /// 피치, 코랄, 라벤더와 따뜻한 빛이 섞이는 팔레트입니다.
+  /// A palette blending peach, coral, lavender, and warm light.
   public var sunset: GradientPalette
-  /// 민트, 스카이 블루와 부드러운 그린이 섞이는 팔레트입니다.
+  /// A palette blending mint, sky blue, and soft green.
   public var lagoon: GradientPalette
 
-  /// 세 가지 표현용 팔레트를 지정합니다.
+  /// Specifies three expressive palettes.
   public init(aurora: GradientPalette, sunset: GradientPalette, lagoon: GradientPalette) {
     self.aurora = aurora
     self.sunset = sunset
     self.lagoon = lagoon
   }
 
-  /// 이름으로 그라디언트 팔레트를 읽거나 교체합니다.
+  /// Reads or replaces a gradient palette by name.
   public subscript(style: Style) -> GradientPalette {
     get {
       switch style {
@@ -38,13 +38,13 @@ public struct GradientToken: Hashable, Sendable {
 }
 
 extension GradientToken {
-  /// 테마에서 선택할 표현용 그라디언트의 이름입니다.
+  /// The name of an expressive gradient to select from the theme.
   public enum Style: CaseIterable, Hashable, Sendable {
-    /// 시안·블루·라일락·핑크 조합입니다.
+    /// A cyan, blue, lilac, and pink combination.
     case aurora
-    /// 피치·코랄·라벤더 조합입니다.
+    /// A peach, coral, and lavender combination.
     case sunset
-    /// 민트·블루·그린 조합입니다.
+    /// A mint, blue, and green combination.
     case lagoon
   }
 }

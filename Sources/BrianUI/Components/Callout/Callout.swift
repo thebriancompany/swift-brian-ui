@@ -68,7 +68,7 @@ public struct BrianCallout: View {
     self.interaction = .dismissible(onDismiss)
   }
 
-  /// BrianSymbols 아이콘을 지정합니다. `icon`이 `nil`이면 아이콘을 표시하지 않습니다.
+  /// Specifies a BrianSymbols icon. Hides the icon when `icon` is `nil`.
   public init(
     _ description: String,
     title: String? = nil,
@@ -82,7 +82,7 @@ public struct BrianCallout: View {
     self.interaction = .display
   }
 
-  /// BrianSymbols 아이콘을 지정합니다. `icon`이 `nil`이면 아이콘을 표시하지 않습니다.
+  /// Specifies a BrianSymbols icon. Hides the icon when `icon` is `nil`.
   public init(
     _ description: String,
     title: String? = nil,
@@ -96,7 +96,7 @@ public struct BrianCallout: View {
     self.interaction = .actionable(action)
   }
 
-  /// BrianSymbols 아이콘을 지정합니다. `icon`이 `nil`이면 아이콘을 표시하지 않습니다.
+  /// Specifies a BrianSymbols icon. Hides the icon when `icon` is `nil`.
   public init(
     _ description: String,
     title: String? = nil,

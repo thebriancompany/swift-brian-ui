@@ -1,15 +1,15 @@
-# 입력과 선택 상태 다루기
+# Managing Input and Selection State
 
-호출자가 소유한 상태를 연결하고 표시 설정과 검증 로직을 구분합니다.
+Connect caller-owned state and distinguish display settings from validation logic.
 
-## 입력과 검증
+## Input and validation
 
-`requirement(.required)`는 필수 표시를 추가합니다. 빈 값의 검증이나 제출 차단은 하지 않습니다.
-`maximumLength(_:)`는 `String.count`와 최대 길이를 표시하고 초과 상태를 강조합니다. 텍스트를 자르지 않습니다.
-`errorMessage(_:)`의 비어 있지 않은 메시지가 도움말보다 우선합니다.
+`requirement(.required)` adds a required indicator. It does not validate empty values or block submission.
+`maximumLength(_:)` displays `String.count` and the maximum length, highlighting overflow. It does not truncate text.
+A nonempty `errorMessage(_:)` takes precedence over helper text.
 
-컴포넌트 고유 메서드는 `Self`를 반환합니다. `.padding()`이나 환경 수정자처럼 `some View`를 반환하는
-일반 수정자보다 먼저 호출해야 계속 사용할 수 있습니다.
+Component-specific methods return `Self`. Call them before general modifiers that return `some View`,
+such as `.padding()` or environment modifiers, to keep those methods available.
 
 ```swift
 import SwiftUI
@@ -22,24 +22,24 @@ struct BrianFormExample: View {
   @FocusState private var nameFocused: Bool
 
   private var nameError: String? {
-    submitted && name.isEmpty ? "이름을 입력하세요." : nil
+    submitted && name.isEmpty ? "Enter your name." : nil
   }
 
   var body: some View {
     VStack {
-      BrianTextField(title: "이름", text: $name)
-        .helperText("20자 이내로 입력하세요.")
+      BrianTextField(title: "Name", text: $name)
+        .helperText("Enter up to 20 characters.")
         .requirement(.required)
         .maximumLength(20)
         .errorMessage(nameError)
         .textFieldFocused($nameFocused)
         .textFieldSize(.large)
 
-      BrianTextArea(title: "메모", text: $memo)
+      BrianTextArea(title: "Memo", text: $memo)
         .maximumLength(200)
         .textAreaSizing(.automatic(maximumLines: 5))
 
-      Button("검증") {
+      Button("Validate") {
         submitted = true
         nameFocused = name.isEmpty
       }
@@ -51,14 +51,14 @@ struct BrianFormExample: View {
 }
 ```
 
-읽기 전용은 `.textFieldReadOnly(true)`, `.textAreaReadOnly(true)`로 설정합니다.
-비활성화는 `.disabled(true)`를 사용합니다. 읽기 전용은 편집 대신 텍스트 표시를 사용합니다.
+Set read-only mode with `.textFieldReadOnly(true)` or `.textAreaReadOnly(true)`.
+Use `.disabled(true)` to disable interaction. Read-only mode displays text instead of an editor.
 
-## 칩으로 선택과 입력값 표시하기
+## Displaying selections and input values with chips
 
-``BrianChip``에 `Binding<Bool>`을 전달하면 탭할 때 선택 여부를 반전합니다.
-단일 선택은 `Bool`과 액션을 전달하고, 액션에서 선택 ID를 갱신합니다.
-`removable:onRemove:`로 만든 입력 칩은 뒤쪽 삭제 버튼만 동작하며 실제 데이터 제거는 앱이 담당합니다.
+Passing a `Binding<Bool>` to ``BrianChip`` toggles selection on tap.
+For single selection, pass a `Bool` and an action that updates the selected ID.
+For input chips created with `removable:onRemove:`, only the trailing remove button acts; the app removes the actual data.
 
 ```swift
 import SwiftUI
@@ -66,14 +66,14 @@ import BrianUI
 
 struct BrianChipExample: View {
   @State private var includesSoldItems = false
-  @State private var category = "전체"
-  @State private var keywords = ["가구", "조명"]
+  @State private var category = "All"
+  @State private var keywords = ["Furniture", "Lighting"]
   @State private var sortByPrice = false
 
   var body: some View {
     VStack(alignment: .leading, spacing: 16) {
       BrianChip(
-        "판매 완료 포함",
+        "Include sold items",
         isSelected: $includesSoldItems,
         prefix: .icon(.symbol(.checkmark))
       )
@@ -81,7 +81,7 @@ struct BrianChipExample: View {
 
       ScrollView(.horizontal) {
         HStack {
-          ForEach(["전체", "가구", "생활"], id: \.self) { item in
+          ForEach(["All", "Furniture", "Home"], id: \.self) { item in
             BrianChip(item, isSelected: category == item) {
               category = item
             }
@@ -99,17 +99,17 @@ struct BrianChipExample: View {
       }
       .chipSize(.small)
 
-      BrianChip("가격순", suffixSystemImage: "chevron.down") {
+      BrianChip("Price", suffixSystemImage: "chevron.down") {
         sortByPrice.toggle()
       }
 
       BrianChip(isSelected: $sortByPrice) {
-        Label("가격순 정렬", systemImage: "arrow.up.arrow.down")
+        Label("Sort by price", systemImage: "arrow.up.arrow.down")
           .labelStyle(.iconOnly)
       }
       .chipLayout(.iconOnly)
 
-      BrianChip("준비 중", isSelected: .constant(false))
+      BrianChip("Coming soon", isSelected: .constant(false))
         .disabled(true)
     }
     .chipSize(.medium)
@@ -118,24 +118,24 @@ struct BrianChipExample: View {
 }
 ```
 
-`chipSize(_:)`는 `.small`, `.medium`, `.large`를 지원합니다.
-`chipVariant(_:)`는 채움 스타일인 `.solid`, 선택하면 진하게 채우는 `.outlineStrong`,
-선택하면 옅은 배경과 진한 테두리를 표시하는 `.outlineWeak`를 지원합니다.
-여러 선택값을 함께 표시할 때는 `.outlineWeak`로 강조 정도를 낮출 수 있습니다.
+`chipSize(_:)` supports `.small`, `.medium`, and `.large`.
+`chipVariant(_:)` supports `.solid` for a filled style, `.outlineStrong` for a strong fill when selected,
+and `.outlineWeak` for a subtle background and strong border when selected.
+Use `.outlineWeak` to reduce emphasis when displaying multiple selections.
 
-텍스트 앞에는 `prefix: .icon(.system("star"))`, `.avatar(Image("profile"))`, `.image(Image("thumbnail"))`을
-사용할 수 있습니다. BrianSymbols와 뒤쪽 아이콘은 <doc:Symbols>를 참고하세요.
+Before the text, you can use `prefix: .icon(.system("star"))`, `.avatar(Image("profile"))`, or `.image(Image("thumbnail"))`.
+For BrianSymbols and trailing icons, see <doc:Symbols>.
 
-커스텀 `label`로 배지 등 표시용 뷰를 조합할 수도 있습니다. 칩 내부에 별도 버튼을 넣지 마세요.
-여러 칩의 배치는 `HStack`, `ScrollView` 등으로 구성하고, 선택 개수 제한과 필터 초기화는 앱에서 처리합니다.
+A custom `label` can combine display views such as badges. Do not nest separate buttons inside a chip.
+Arrange chips with `HStack`, `ScrollView`, or similar containers. The app handles selection limits and filter resets.
 
-## 전체 선택과 수량 범위
+## Select all and quantity ranges
 
-``BrianCheckboxGroup``은 배치만 담당합니다. 전체 선택은 ``BrianCheckbox``의 `sources:`로 연결합니다.
-빈 `sources`는 선택되지 않은 비활성 체크박스가 됩니다.
+``BrianCheckboxGroup`` handles only layout. Connect select-all behavior through ``BrianCheckbox``'s `sources:`.
+Empty `sources` produce an unchecked, disabled checkbox.
 
-``BrianQuantityPicker``에는 범위 인자가 없습니다. 감소·증가 버튼의 비활성화 조건을 직접 계산하세요.
-다른 경로에서 수량을 변경할 때의 범위 검증도 앱이 담당합니다.
+``BrianQuantityPicker`` has no range argument. Compute the conditions that disable decrement and increment yourself.
+The app also validates the range when quantity changes through other paths.
 
 ```swift
 import SwiftUI
@@ -149,10 +149,10 @@ struct BrianSelectionExample: View {
   var body: some View {
     VStack {
       BrianCheckboxGroup {
-        BrianCheckbox("이용약관", isOn: $terms)
-        BrianCheckbox("개인정보 처리방침", isOn: $privacy)
+        BrianCheckbox("Terms of service", isOn: $terms)
+        BrianCheckbox("Privacy policy", isOn: $privacy)
       } header: {
-        BrianCheckbox("전체 동의", sources: [$terms, $privacy])
+        BrianCheckbox("Agree to all", sources: [$terms, $privacy])
       }
 
       BrianQuantityPicker(

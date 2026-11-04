@@ -1,9 +1,9 @@
 import SwiftUI
 
-/// BrianUI 알림의 제목, 본문 및 액션 영역을 배치합니다.
+/// Lays out the title, body, and action area of a BrianUI alert.
 ///
-/// 이 뷰 자체는 알림을 표시하지 않습니다. BrianUI의 `alert` 수정자로 표시하세요.
-/// 액션 영역은 ``BrianAlertFooter``로 구성합니다.
+/// This view does not present an alert itself. Present it with BrianUI's `alert` modifier.
+/// Compose the action area with ``BrianAlertFooter``.
 public struct BrianAlert<Header: View, Content: View, Footer: View>: View {
   @Environment(\.theme) private var theme
 

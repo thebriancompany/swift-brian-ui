@@ -1,12 +1,12 @@
 import SwiftUI
 
-/// 컨텐츠 영역의 위/아래 경계를 자연스럽게 노출시키기 위한 Gradient입니다.
+/// A gradient that softly reveals the top or bottom boundary of a content area.
 ///
-/// 테마의 background base 색상을 사용합니다.
+/// Uses the theme's base background color.
 ///
-/// Direction에는 up, down 값이 존재합니다.
-/// up은 위로 가면서 점차 옅어집니다.
-/// down은 아래로 가면서 점차 옅어집니다.
+/// Direction supports up and down values.
+/// Up fades toward the top.
+/// Down fades toward the bottom.
 ///
 /// ```swift
 /// Rectangle()
@@ -24,9 +24,9 @@ import SwiftUI
 /// ```
 public struct BrianContentFog: View {
   public enum Direction: Hashable, Sendable {
-    /// 아래쪽 배경색에서 위쪽으로 갈수록 투명해집니다.
+    /// Fades from the background color at the bottom to transparent at the top.
     case up
-    /// 위쪽 배경색에서 아래쪽으로 갈수록 투명해집니다.
+    /// Fades from the background color at the top to transparent at the bottom.
     case down
   }
 

@@ -1,17 +1,17 @@
 import Foundation
 
 public struct SpacingToken: Hashable, Sendable {
-  /// 기본값 4
+  /// Defaults to 4.
   public var xSmall: CGFloat
-  /// 기본값 8
+  /// Defaults to 8.
   public var small: CGFloat
-  /// 기본값 12
+  /// Defaults to 12.
   public var medium: CGFloat
-  /// 기본값 16
+  /// Defaults to 16.
   public var large: CGFloat
-  /// 기본값 24
+  /// Defaults to 24.
   public var xLarge: CGFloat
-  /// 기본값 32
+  /// Defaults to 32.
   public var xxLarge: CGFloat
 
   public init(

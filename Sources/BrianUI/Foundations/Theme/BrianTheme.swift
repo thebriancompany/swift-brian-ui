@@ -1,39 +1,39 @@
 import Foundation
 
-/// BrianUI 컴포넌트가 공유하는 색상, 그라디언트, 모서리, 간격, 글꼴 및 그림자 토큰입니다.
+/// Color, gradient, radius, spacing, typography, and shadow tokens shared by BrianUI components.
 ///
-/// 별도 설정 없이 기본 테마를 사용합니다. 하위 뷰의 테마를 변경하려면
-/// `.environment(\.theme, theme)`을 적용합니다.
+/// Uses the default theme without setup. To change the theme for descendants,
+/// apply `.environment(\.theme, theme)`.
 ///
 /// ```swift
 /// ContentView()
 ///   .environment(\.theme, BrianTheme())
 /// ```
 ///
-/// 사용 예제는 <doc:Theming>을 참고하세요.
+/// See <doc:Theming> for usage examples.
 public struct BrianTheme: Hashable, Sendable {
-  /// 의미별 색상 토큰입니다.
+  /// Semantic color tokens.
   public var color: ColorToken
-  /// 모서리 반경 토큰입니다.
+  /// Corner radius tokens.
   public var radius: RadiusToken
-  /// 레이아웃 간격 토큰입니다.
+  /// Layout spacing tokens.
   public var spacing: SpacingToken
-  /// 텍스트 역할별 글꼴 토큰입니다.
+  /// Typography tokens by text role.
   public var typography: TypographyToken
-  /// 그림자 토큰입니다.
+  /// Shadow tokens.
   public var shadow: ShadowToken
-  /// 히어로와 강조 영역에 사용하는 표현용 그라디언트 토큰입니다.
+  /// Expressive gradient tokens for heroes and highlighted areas.
   public var gradient: GradientToken
 
-  /// 각 토큰을 직접 지정하는 테마를 만듭니다.
+  /// Creates a theme by specifying each token directly.
   ///
   /// - Parameters:
-  ///   - color: 사용할 의미별 색상 토큰입니다.
-  ///   - radius: 모서리 반경입니다. 기본값은 `.default`입니다.
-  ///   - spacing: 간격입니다. 기본값은 `.default`입니다.
-  ///   - typography: 글꼴입니다. 기본값은 `.default`입니다.
-  ///   - shadow: 그림자입니다. 기본값은 `.default`입니다.
-  ///   - gradient: 표현용 그라디언트입니다. 기본값은 `.default`입니다.
+  ///   - color: The semantic color tokens to use.
+  ///   - radius: Corner radii. Defaults to `.default`.
+  ///   - spacing: Spacing. Defaults to `.default`.
+  ///   - typography: Typography. Defaults to `.default`.
+  ///   - shadow: Shadows. Defaults to `.default`.
+  ///   - gradient: Expressive gradients. Defaults to `.default`.
   public init(
     color: ColorToken,
     radius: RadiusToken = .default,
@@ -50,13 +50,13 @@ public struct BrianTheme: Hashable, Sendable {
     self.gradient = gradient
   }
 
-  /// 팔레트로부터 의미별 색상 토큰을 구성하는 테마를 만듭니다.
+  /// Creates a theme by deriving semantic color tokens from a palette.
   ///
   /// - Parameters:
-  ///   - palette: 색상 팔레트입니다. 기본 팔레트를 생략할 수 있습니다.
-  ///   - brand: 브랜드 색상 스케일입니다. `nil`이면 팔레트의 기본 브랜드 구성을 사용합니다.
-  ///   - shadow: 그림자 토큰입니다. 기본값은 `.default`입니다.
-  ///   - gradient: 브랜드 단색 팔레트와 독립적인 그라디언트 토큰입니다. 기본값은 `.default`입니다.
+  ///   - palette: The color palette. Omit to use the default palette.
+  ///   - brand: The brand color scale. `nil` uses the palette's default brand configuration.
+  ///   - shadow: Shadow tokens. Defaults to `.default`.
+  ///   - gradient: Gradient tokens independent of the solid brand palette. Defaults to `.default`.
   public init(
     palette: ColorPalette = .default,
     brand: ColorPalette.Scale? = nil,

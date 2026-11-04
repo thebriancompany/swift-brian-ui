@@ -1,16 +1,16 @@
 import SwiftUI
 
-/// Checkbox를 세로로 배치합니다. 헤더가 있으면 강조해서 표시하고 하위 항목을 들여씁니다.
-/// 그룹의 Property는 내부 Item에 함께 적용되며, 그룹을 중첩해서 하위 항목을 구성할 수 있습니다.
-/// 글꼴 강조를 지정하지 않은 헤더는 `.bold`를 사용하며, 상위 또는 항목의 설정이 우선합니다.
+/// Arranges checkboxes vertically. Emphasizes an optional header and indents its children.
+/// Group properties also apply to child items. Nest groups to organize child items.
+/// Headers without an explicit font emphasis use `.bold`; ancestor or item settings take precedence.
 ///
 /// ```swift
 /// BrianCheckboxGroup {
-///   BrianCheckbox("이용약관 동의", isOn: $terms)
+///   BrianCheckbox("Agree to terms of service", isOn: $terms)
 ///
-///   BrianCheckbox("개인정보 처리방침 동의", isOn: $privacy)
+///   BrianCheckbox("Agree to privacy policy", isOn: $privacy)
 /// } header: {
-///   BrianCheckbox("전체 동의", sources: [$terms, $privacy])
+///   BrianCheckbox("Agree to all", sources: [$terms, $privacy])
 /// }
 /// .checkboxTone(.brand)
 /// ```

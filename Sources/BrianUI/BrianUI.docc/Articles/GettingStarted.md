@@ -1,21 +1,21 @@
-# BrianUI 시작하기
+# Getting Started with BrianUI
 
-패키지를 연결하고 기본 테마로 첫 화면을 만듭니다.
+Add the package and build your first screen with the default theme.
 
-## 패키지 연결
+## Adding the package
 
-Xcode의 패키지 의존성 추가 화면에서 다음 저장소를 연결하고 앱 타깃에 `BrianUI` 제품을 추가합니다.
+In Xcode's package dependency dialog, add the following repository and the `BrianUI` product to your app target.
 
 `https://github.com/thebriancompany/swift-brian-ui.git`
 
-프로젝트에서 검증한 태그나 리비전을 선택하세요. 이 문서는 현재 체크아웃의 API를 설명합니다.
-Swift tools 6.4 이상, iOS 18 이상 또는 macOS 15 이상이 필요합니다.
+Choose a tag or revision validated for your project. This article describes the current checkout's APIs.
+Requires Swift tools 6.4 or later, iOS 18 or later, or macOS 15 or later.
 
-BrianSymbols는 BrianUI의 의존성으로 함께 가져옵니다. 아이콘 선택과 사용법은 <doc:Symbols>를 참고하세요.
+BrianSymbols is fetched as a BrianUI dependency. See <doc:Symbols> for icon selection and usage.
 
-## 첫 화면
+## Your first screen
 
-별도 초기화나 전역 등록은 필요하지 않습니다. 기본 테마가 환경에 제공됩니다.
+No separate initialization or global registration is needed. The default theme is provided through the environment.
 
 ```swift
 import SwiftUI
@@ -27,12 +27,12 @@ struct BrianWelcomeView: View {
 
   var body: some View {
     VStack(spacing: 16) {
-      BrianTextField(title: "이름", text: $name, placeholder: "이름을 입력하세요")
-        .helperText("프로필에 표시할 이름입니다.")
+      BrianTextField(title: "Name", text: $name, placeholder: "Enter your name")
+        .helperText("The name shown on your profile.")
 
-      BrianSwitch("알림 받기", isOn: $notifications)
+      BrianSwitch("Receive notifications", isOn: $notifications)
 
-      Button("이름 지우기") {
+      Button("Clear name") {
         name = ""
       }
       .buttonStyle(.solid)
@@ -43,28 +43,28 @@ struct BrianWelcomeView: View {
 }
 ```
 
-## 컴포넌트 선택
+## Choosing components
 
-| 목적 | API | 설정 방법 |
+| Purpose | API | Configuration |
 | --- | --- | --- |
-| 일반 버튼 | SwiftUI `Button` | `.buttonStyle(.solid / .weak / .outline / .ghost)` |
-| 플로팅 버튼 | SwiftUI `Button` | `.buttonStyle(.floating)`, `floatingButtonSize(_:)` |
-| 주·보조 액션 배치 | ``BrianButtonGroup`` | `primary`, `secondary` 클로저 |
-| 한 줄 / 여러 줄 입력 | ``BrianTextField``, ``BrianTextArea`` | 문자열 바인딩, 전용 수정자 |
-| 체크박스 / 전체 선택 | ``BrianCheckbox``, ``BrianCheckboxGroup`` | `isOn:` 또는 `sources:` |
-| 선택 / 제안 / 입력 칩 | ``BrianChip`` | `isSelected:`, `action:`, `onRemove:`, `chipVariant(_:)` |
-| 켜기 / 끄기 | ``BrianSwitch`` | `isOn:` |
-| 수량 조절 | ``BrianQuantityPicker`` | `quantity:`, 방향별 비활성화 조건 |
-| 상태 표시 | ``BrianBadge``, ``BrianCallout`` | 각 컴포넌트의 프로퍼티 수정자 |
-| 로딩 표시 | ``BrianLoadingSpinner`` | 직접 배치하거나 버튼에 `isLoading(_:)` 적용 |
-| 모달 표시 | BrianUI `alert`, `bottomSheet` 수정자 | 표시 바인딩과 콘텐츠 |
-| 앵커 메뉴 | `menuAnchor(id:)`, `menuScope(selection:content:)` | 동일한 타입의 ID와 선택 바인딩 |
+| Standard button | SwiftUI `Button` | `.buttonStyle(.solid / .weak / .outline / .ghost)` |
+| Floating button | SwiftUI `Button` | `.buttonStyle(.floating)`, `floatingButtonSize(_:)` |
+| Primary and secondary action layout | ``BrianButtonGroup`` | `primary`, `secondary` closures |
+| Single-line / multiline input | ``BrianTextField``, ``BrianTextArea`` | String binding, dedicated modifiers |
+| Checkbox / select all | ``BrianCheckbox``, ``BrianCheckboxGroup`` | `isOn:` or `sources:` |
+| Selection / suggestion / input chip | ``BrianChip`` | `isSelected:`, `action:`, `onRemove:`, `chipVariant(_:)` |
+| On / off | ``BrianSwitch`` | `isOn:` |
+| Quantity adjustment | ``BrianQuantityPicker`` | `quantity:`, per-direction disabled conditions |
+| Status display | ``BrianBadge``, ``BrianCallout`` | Component-specific property modifiers |
+| Loading indicator | ``BrianLoadingSpinner`` | Place directly or apply `isLoading(_:)` to a button |
+| Modal presentation | BrianUI `alert`, `bottomSheet` modifiers | Presentation binding and content |
+| Anchored menu | `menuAnchor(id:)`, `menuScope(selection:content:)` | Matching ID types and selection binding |
 
-버튼 크기와 색상은 `buttonSize(_:)`, `buttonTone(_:)`으로 지정합니다.
-컴포넌트마다 지원하는 크기와 색상 케이스가 다르므로 다른 컴포넌트의 값을 그대로 적용하지 마세요.
+Set button size and tone with `buttonSize(_:)` and `buttonTone(_:)`.
+Supported size and tone cases differ by component; do not assume values transfer between components.
 
-## 다음 단계
+## Next steps
 
-- <doc:Theming>: 환경을 통한 테마 및 컴포넌트 설정
-- <doc:Forms>: 입력 상태와 검증 책임
-- <doc:Presentations>: 알림, 바텀 시트, 메뉴
+- <doc:Theming>: themes and component configuration through the environment
+- <doc:Forms>: input state and validation responsibilities
+- <doc:Presentations>: alerts, bottom sheets, and menus
