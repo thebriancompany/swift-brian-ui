@@ -1,3 +1,4 @@
+import BrianSymbols
 import SwiftUI
 
 public struct BrianBadge: View {
@@ -6,20 +7,29 @@ public struct BrianBadge: View {
   @Environment(\.badgeProperty) private var property
 
   private let title: String
-  private let systemImage: String?
+  private let imageStyle: Image.Style?
 
   public init(
     title: String,
     systemImage: String? = nil
   ) {
     self.title = title
-    self.systemImage = systemImage
+    self.imageStyle = .init(systemName: systemImage)
+  }
+
+  /// BrianSymbols 아이콘을 지정합니다. `symbol`이 `nil`이면 아이콘을 표시하지 않습니다.
+  public init(
+    title: String,
+    symbol: BrianSymbol?
+  ) {
+    self.title = title
+    self.imageStyle = .init(symbol: symbol)
   }
 
   public var body: some View {
     HStack(spacing: spacing) {
-      if let systemImage {
-        Image(systemName: systemImage)
+      if let imageStyle {
+        Image(style: imageStyle)
           .fixedSize()
       }
 

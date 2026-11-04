@@ -1,3 +1,4 @@
+import BrianSymbols
 import SwiftUI
 
 /// 제목, 도움말 및 오류 상태를 표시하는 한 줄 텍스트 입력입니다.
@@ -183,7 +184,7 @@ public struct BrianTextField<HeaderTrailing: View, Leading: View, Trailing: View
 
       if showsClearButton && canEdit && inputFocus.wrappedValue && !text.isEmpty {
         Button(action: clearButtonTapped) {
-          Image(systemName: "xmark.circle.fill")
+          Image(symbol: .xmarkCircleFill)
             .foregroundStyle(theme.color.foreground.tertiary)
         }
         .buttonStyle(.plain)

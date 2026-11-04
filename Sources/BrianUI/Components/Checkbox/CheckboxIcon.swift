@@ -1,3 +1,4 @@
+import BrianSymbols
 import SwiftUI
 
 public struct BrianCheckboxIcon: View {
@@ -20,7 +21,7 @@ public struct BrianCheckboxIcon: View {
         .hidden()
     }
     .overlay {
-      Image(systemName: state == .indeterminate ? "minus" : "checkmark")
+      Image(symbol: state == .indeterminate ? .minus : .checkmark)
         .typography(typography)
         .fontWeight(.bold)
         .imageScale(property.shape == .outlined ? .small : .medium)

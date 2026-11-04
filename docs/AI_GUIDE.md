@@ -17,9 +17,12 @@
 각 DocC 문서의 Swift 예제에는 import와 상태 선언이 포함되어 있습니다.
 문서에 없는 초기화 인자, 수정자, enum 케이스를 추측해서 만들지 마세요.
 
+아이콘을 지정할 때는 [BrianSymbols](../Sources/BrianUI/BrianUI.docc/Articles/Symbols.md)의 컴포넌트별 인자를 확인하세요.
+
 ## 코드 작성 규칙
 
 - `import SwiftUI`와 `import BrianUI`를 사용합니다. 제품 및 모듈 이름은 `BrianUI`입니다.
+- BrianSymbols는 `Image(symbol:)`, 배지·메뉴의 `symbol:`, 콜아웃의 `icon:`, 칩의 `suffixSymbol:`으로 지정합니다. 칩 앞쪽은 `.icon(.symbol(.checkmark))`를 사용하며 SF Symbols도 지원합니다.
 - 패키지는 Swift tools 6.4, iOS 18 이상, macOS 15 이상을 요구합니다.
 - 별도 설정 없이 기본 테마로 작동합니다. 커스텀 테마는 `.environment(\.theme, theme)`으로 주입합니다.
 - 일반 버튼은 SwiftUI `Button`에 `.buttonStyle(.solid)`, `.weak`, `.outline`, `.ghost`를 적용합니다. `BrianButton`이라는 뷰는 제공하지 않습니다.
@@ -66,6 +69,7 @@
 
 - `Foundations/Theme`: `BrianTheme`, `EnvironmentValues.theme`
 - `Foundations/Color`, `Gradient`, `Font`, `Spacing`, `Radius`, `Shadow`: 토큰과 기본값
+- `Components/Image`: `Image.Style`, BrianSymbols 및 SF Symbols 이미지 초기화
 - `Components/Gradient`: 메쉬 배경과 배경·전경색 수정자
 - `Components/Button/Style`: 버튼 스타일과 `.solid` 등 정적 접근자
 - `Components/<컴포넌트>/Environment+*.swift`: 환경을 설정하는 공개 수정자

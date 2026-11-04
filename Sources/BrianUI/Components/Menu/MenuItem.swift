@@ -1,3 +1,4 @@
+import BrianSymbols
 import SwiftUI
 
 public struct BrianMenuItem: View {
@@ -8,7 +9,7 @@ public struct BrianMenuItem: View {
 
   private let title: String
   private let description: String?
-  private let systemImage: String?
+  private let imageStyle: Image.Style?
   private let badge: String?
   private let isSelected: Bool
   private let role: ButtonRole?
@@ -25,7 +26,25 @@ public struct BrianMenuItem: View {
   ) {
     self.title = title
     self.description = description
-    self.systemImage = systemImage
+    self.imageStyle = .init(systemName: systemImage)
+    self.badge = badge
+    self.isSelected = isSelected
+    self.role = role
+    self.action = action
+  }
+
+  public init(
+    title: String,
+    description: String? = nil,
+    symbol: BrianSymbol?,
+    badge: String? = nil,
+    isSelected: Bool = false,
+    role: ButtonRole? = nil,
+    action: @escaping () -> Void
+  ) {
+    self.title = title
+    self.description = description
+    self.imageStyle = .init(symbol: symbol)
     self.badge = badge
     self.isSelected = isSelected
     self.role = role
@@ -35,8 +54,8 @@ public struct BrianMenuItem: View {
   public var body: some View {
     Button(role: role, action: itemTapped) {
       HStack(spacing: theme.spacing.xSmall) {
-        if let systemImage {
-          Image(systemName: systemImage)
+        if let imageStyle {
+          Image(style: imageStyle)
             .frame(width: theme.spacing.xLarge)
         }
 
@@ -60,7 +79,7 @@ public struct BrianMenuItem: View {
         }
 
         if isSelected {
-          Image(systemName: "checkmark")
+          Image(symbol: .checkmark)
         }
       }
       .typography(
