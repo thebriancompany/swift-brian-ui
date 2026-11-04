@@ -60,9 +60,3 @@ struct BrianSymbolsExample: View {
 
 기존 `prefix: .icon("star")` 호출은 SF Symbols 아이콘으로 유지됩니다.
 새 코드에서는 `.symbol(...)` 또는 `.system(...)`으로 아이콘 종류를 명시할 수 있습니다.
-
-## 의존성 버전
-
-현재 BrianUI는 BrianSymbols의 `main` 브랜치를 참조합니다.
-브랜치 업데이트에 따라 심볼 목록과 이미지가 바뀔 수 있으므로 앱에서 검증한
-의존성 해석 결과를 `Package.resolved`로 관리하세요.
