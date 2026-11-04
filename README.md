@@ -22,7 +22,6 @@ A theme and UI component library for SwiftUI apps.
 ## Documentation
 
 - [API documentation (DocC)](https://thebriancompany.github.io/swift-brian-ui/0.2.5/documentation/brianui/)
-
 - [Getting started and choosing components](Sources/BrianUI/BrianUI.docc/Articles/GettingStarted.md)
 - [Themes and styles](Sources/BrianUI/BrianUI.docc/Articles/Theming.md)
 - [Gradients and multicolor effects](Sources/BrianUI/BrianUI.docc/Articles/Gradients.md)
