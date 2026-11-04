@@ -16,13 +16,13 @@ A theme and UI component library for SwiftUI apps.
 - iOS 18 or later / macOS 15 or later
 
 ```swift
-.package(url: "https://github.com/thebriancompany/swift-brian-ui.git", exact: "0.2.4")
+.package(url: "https://github.com/thebriancompany/swift-brian-ui.git", exact: "0.2.5")
 ```
 
 ## Documentation
 
-- [BrianUI 0.2.4 API documentation (DocC)](https://thebriancompany.github.io/swift-brian-ui/0.2.4/documentation/brianui/)
-- [0.2.4 release](https://github.com/thebriancompany/swift-brian-ui/releases/tag/0.2.4)
+- [API documentation (DocC)](https://thebriancompany.github.io/swift-brian-ui/0.2.5/documentation/brianui/)
+
 - [Getting started and choosing components](Sources/BrianUI/BrianUI.docc/Articles/GettingStarted.md)
 - [Themes and styles](Sources/BrianUI/BrianUI.docc/Articles/Theming.md)
 - [Gradients and multicolor effects](Sources/BrianUI/BrianUI.docc/Articles/Gradients.md)
