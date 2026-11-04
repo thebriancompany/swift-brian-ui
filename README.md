@@ -1,35 +1,35 @@
-![Brian Design System](docs/assets/cover.webp)
-
-![개발 중인 Brian Design System](docs/assets/wip.png)
-
 # Brian Design System
+
+[English](README.md) | [한국어](README.ko.md)
 
 [![Documentation](https://img.shields.io/badge/documentation-gray?logo=swift&logoColor=white)](https://swiftpackageindex.com/thebriancompany/swift-brian-ui/documentation)
 [![Swift versions](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fthebriancompany%2Fswift-brian-ui%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/thebriancompany/swift-brian-ui)
 [![Platforms](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fthebriancompany%2Fswift-brian-ui%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/thebriancompany/swift-brian-ui)
 
-SwiftUI 앱을 위한 테마와 UI 컴포넌트 라이브러리입니다.
+A theme and UI component library for SwiftUI apps.
 
-## 설치
+![Brian Design System](docs/assets/cover.webp)
 
-- Swift tools 6.4 이상
-- iOS 18 이상 / macOS 15 이상
+## Installation
+
+- Swift tools 6.4 or later
+- iOS 18 or later / macOS 15 or later
 
 ```swift
 .package(url: "https://github.com/thebriancompany/swift-brian-ui.git", exact: "0.2.4")
 ```
 
-## 문서
+## Documentation
 
-- [BrianUI 0.2.4 API 문서 (DocC)](https://thebriancompany.github.io/swift-brian-ui/0.2.4/documentation/brianui/)
-- [0.2.4 릴리스](https://github.com/thebriancompany/swift-brian-ui/releases/tag/0.2.4)
-- [시작하기와 컴포넌트 선택](Sources/BrianUI/BrianUI.docc/Articles/GettingStarted.md)
-- [테마와 스타일](Sources/BrianUI/BrianUI.docc/Articles/Theming.md)
-- [그라디언트와 다색 표현](Sources/BrianUI/BrianUI.docc/Articles/Gradients.md)
-- [BrianSymbols 아이콘](Sources/BrianUI/BrianUI.docc/Articles/Symbols.md)
-- [입력과 선택 상태](Sources/BrianUI/BrianUI.docc/Articles/Forms.md)
-- [알림, 바텀 시트와 메뉴](Sources/BrianUI/BrianUI.docc/Articles/Presentations.md)
-- [AI 사용 가이드](docs/AI_GUIDE.md)
-- [문서 작성 기준과 DocC 빌드](docs/DOCUMENTATION.md)
+- [BrianUI 0.2.4 API documentation (DocC)](https://thebriancompany.github.io/swift-brian-ui/0.2.4/documentation/brianui/)
+- [0.2.4 release](https://github.com/thebriancompany/swift-brian-ui/releases/tag/0.2.4)
+- [Getting started and choosing components](Sources/BrianUI/BrianUI.docc/Articles/GettingStarted.md)
+- [Themes and styles](Sources/BrianUI/BrianUI.docc/Articles/Theming.md)
+- [Gradients and multicolor effects](Sources/BrianUI/BrianUI.docc/Articles/Gradients.md)
+- [BrianSymbols icons](Sources/BrianUI/BrianUI.docc/Articles/Symbols.md)
+- [Input and selection state](Sources/BrianUI/BrianUI.docc/Articles/Forms.md)
+- [Alerts, bottom sheets, and menus](Sources/BrianUI/BrianUI.docc/Articles/Presentations.md)
+- [AI usage guide](docs/AI_GUIDE.md)
+- [Documentation guidelines and DocC builds](docs/DOCUMENTATION.md)
 
-AI로 앱을 구현할 때는 `docs/AI_GUIDE.md`를 컨텍스트에 제공하세요.
+When building apps with AI, include `docs/AI_GUIDE.md` in the context.
