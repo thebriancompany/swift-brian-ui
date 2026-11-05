@@ -129,6 +129,77 @@ For BrianSymbols and trailing icons, see <doc:Symbols>.
 A custom `label` can combine display views such as badges. Do not nest separate buttons inside a chip.
 Arrange chips with `HStack`, `ScrollView`, or similar containers. The app handles selection limits and filter resets.
 
+## Selecting dates and times
+
+``BrianDatePicker`` uses a caller-owned `Binding<Date>`. By default it shows both date and time controls.
+Use `.date` for a calendar or `.hourAndMinute` for time selection only.
+
+```swift
+import SwiftUI
+import BrianUI
+
+struct BrianDateSelectionExample: View {
+  @State private var appointment = Date()
+  @State private var birthday = Date()
+  @State private var reminder = Date()
+  @State private var latestBirthday = Date()
+
+  var body: some View {
+    ScrollView {
+      VStack(spacing: 24) {
+        BrianDatePicker("Appointment", selection: $appointment)
+
+        BrianDatePicker(
+          "Birthday",
+          selection: $birthday,
+          in: ...latestBirthday,
+          displayedComponents: .date
+        )
+
+        BrianDatePicker(
+          "Reminder",
+          selection: $reminder,
+          displayedComponents: .hourAndMinute
+        )
+      }
+      .padding()
+    }
+  }
+}
+```
+
+### Change the selection
+
+Swipe horizontally or use the arrows to browse months without changing the selected date.
+Tap a day to select it. Tap the month heading to open separate year and month wheels at the selected date.
+Changing year or month keeps the day and time where valid, adjusting to the target month and era when necessary.
+
+Tap the time heading to open separate hour and minute wheels. The wheels replace the calendar;
+tap the active heading again to return. Time-only controls expand the wheels below the heading.
+The wheels use 24-hour values, while the time heading follows the environment's locale.
+
+Day and wheel-row taps update the binding immediately. Scrolling a wheel updates it when scrolling settles.
+The calendar, time zone, and locale follow the environment. Month and year lists expand as you navigate.
+
+Colors, typography, and spacing follow `theme`. Today has a neutral background and outline that refresh
+while the calendar is visible. SwiftUI's `datePickerStyle` does not change this component's layout.
+
+### Limit selectable dates
+
+Use `in:` with a closed, lower-bounded, or upper-bounded range. Bounds are inclusive and apply
+to the full instant, even when only dates or times are displayed. An out-of-range binding is clamped
+on appearance and when the range or selection changes, including while the control is disabled.
+Time-only controls can therefore move to another day when the range changes.
+
+Keep bounds stable during editing, as `latestBirthday` does in the example. Capture time-based bounds
+when editing begins instead of recomputing `Date()` whenever the binding changes.
+See ``BrianDatePicker`` for the selection contract and its range overloads.
+
+### Save or cancel changes
+
+Pass an app-owned draft date to the picker. Save copies the draft to the model; Cancel discards it.
+Once wheel scrolling settles, Save can use the draft without returning to the calendar.
+
 ## Select all and quantity ranges
 
 ``BrianCheckboxGroup`` handles only layout. Connect select-all behavior through ``BrianCheckbox``'s `sources:`.

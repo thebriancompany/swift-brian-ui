@@ -66,6 +66,7 @@ use components with the `Brian` prefix. The caller owns state and passes it thro
 - ``BrianChipProperty``
 - ``BrianSwitch``
 - ``BrianQuantityPicker``
+- ``BrianDatePicker``
 
 ### Alerts and menus
 
