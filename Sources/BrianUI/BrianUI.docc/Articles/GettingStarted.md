@@ -55,6 +55,7 @@ struct BrianWelcomeView: View {
 | Selection / suggestion / input chip | ``BrianChip`` | `isSelected:`, `action:`, `onRemove:`, `chipVariant(_:)` |
 | On / off | ``BrianSwitch`` | `isOn:` |
 | Quantity adjustment | ``BrianQuantityPicker`` | `quantity:`, per-direction disabled conditions |
+| Date / time selection | ``BrianDatePicker`` | `selection:`, optional `in:` range, `displayedComponents:` |
 | Status display | ``BrianBadge``, ``BrianCallout`` | Component-specific property modifiers |
 | Loading indicator | ``BrianLoadingSpinner`` | Place directly or apply `isLoading(_:)` to a button |
 | Modal presentation | BrianUI `alert`, `bottomSheet` modifiers | Presentation binding and content |
