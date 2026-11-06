@@ -131,8 +131,8 @@ public struct BrianDatePicker<Label: View>: View {
 
   /// Shows compact buttons that open the BrianUI calendar and time wheels.
   ///
-  /// Apply `datePickerScope()` to an ancestor screen container outside scroll views.
-  /// The scope is required to present the popup. Call this method before general view modifiers.
+  /// The popup is presented in the current window and dismisses active text input.
+  /// Call this method before general view modifiers.
   /// Selection changes update the binding immediately; dismissing does not cancel changes.
   /// See <doc:Forms> for examples of compact controls and draft selection.
   ///
@@ -151,6 +151,16 @@ public struct BrianDatePicker<Label: View>: View {
       } else {
         expandedPicker
       }
+    }
+    .onChange(of: isEnabled) { _, enabled in
+      if !enabled {
+        showsDate = false
+        showsTime = false
+      }
+    }
+    .onDisappear {
+      showsDate = false
+      showsTime = false
     }
     .onAppear { synchronizeCalendar() }
     .onChange(of: dateCalendar) { _, _ in synchronizeCalendar() }

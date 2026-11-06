@@ -105,5 +105,5 @@ struct BrianMenuExample: View {
 }
 ```
 
-Compact ``BrianDatePicker`` controls use `datePickerScope()` to host their calendar and time popups.
+Compact ``BrianDatePicker`` controls use the current window to host their calendar and time popups.
 See <doc:Forms> for setup, selection updates, and label visibility.
