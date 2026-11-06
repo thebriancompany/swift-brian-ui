@@ -190,8 +190,8 @@ Apply `.datePickerStyle(.compact)` directly to `BrianDatePicker` to show buttons
 BrianUI calendar and time popups. Add `.labelsHidden()` to hide the visible label.
 The default style remains the expanded calendar.
 
-A compact picker requires `.datePickerScope()` on an ancestor screen container, outside scroll views.
-The scope provides popup placement bounds and dismisses the popup when you tap outside it.
+A compact picker presents in its current window and ends active text editing before opening.
+Tapping outside dismisses the popup.
 
 ```swift
 import SwiftUI
@@ -212,18 +212,18 @@ struct BrianCompactDatePickerExample: View {
       }
       .padding()
     }
-    .datePickerScope()
   }
 }
 ```
 
 The popup inherits the picker's environment, including its theme, locale, and calendar.
 Disabling the picker while its popup is open closes it. Menu width settings do not override
-the DatePicker popup width; the popup still fits within the scope's available space.
+the DatePicker popup width; the popup still fits within the window's available space.
 
 Use `.date` for a date-only button or `.hourAndMinute` for a time-only button.
-The open button uses the theme's brand colors. Popup expansion and dismissal animate around
-the opening button position; changing the selected value does not move that reference point.
+The open button uses the theme's brand colors. The popup animates around the button position when opening or closing after an outside tap.
+The position is recalculated when the picker updates.
+The accessibility escape action also closes the popup.
 This animation is specific to DatePicker popups and does not enable animations for ordinary menus.
 
 Apply `datePickerStyle(.compact)` and `labelsHidden()` before modifiers such as `padding()`

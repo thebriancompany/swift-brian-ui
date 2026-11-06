@@ -67,7 +67,6 @@ use components with the `Brian` prefix. The caller owns state and passes it thro
 - ``BrianSwitch``
 - ``BrianQuantityPicker``
 - ``BrianDatePicker``
-- ``SwiftUICore/View/datePickerScope()``
 
 ### Alerts and menus
 
