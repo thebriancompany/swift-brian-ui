@@ -182,7 +182,54 @@ Day and wheel-row taps update the binding immediately. Scrolling a wheel updates
 The calendar, time zone, and locale follow the environment. Month and year lists expand as you navigate.
 
 Colors, typography, and spacing follow `theme`. Today has a neutral background and outline that refresh
-while the calendar is visible. SwiftUI's `datePickerStyle` does not change this component's layout.
+while the calendar is visible.
+
+### Show compact date and time buttons
+
+Apply `.datePickerStyle(.compact)` directly to `BrianDatePicker` to show buttons that open
+BrianUI calendar and time popups. Add `.labelsHidden()` to hide the visible label.
+The default style remains the expanded calendar.
+
+A compact picker requires `.datePickerScope()` on an ancestor screen container, outside scroll views.
+The scope provides popup placement bounds and dismisses the popup when you tap outside it.
+
+```swift
+import SwiftUI
+import BrianUI
+
+struct BrianCompactDatePickerExample: View {
+  @State private var appointment = Date()
+
+  var body: some View {
+    ScrollView {
+      VStack(alignment: .leading, spacing: 16) {
+        BrianDatePicker("Appointment", selection: $appointment)
+          .datePickerStyle(.compact)
+          .labelsHidden()
+
+        BrianDatePicker("Time", selection: $appointment, displayedComponents: .hourAndMinute)
+          .datePickerStyle(.compact)
+      }
+      .padding()
+    }
+    .datePickerScope()
+  }
+}
+```
+
+The popup inherits the picker's environment, including its theme, locale, and calendar.
+Disabling the picker while its popup is open closes it. Menu width settings do not override
+the DatePicker popup width; the popup still fits within the scope's available space.
+
+Use `.date` for a date-only button or `.hourAndMinute` for a time-only button.
+The open button uses the theme's brand colors. Popup expansion and dismissal animate around
+the opening button position; changing the selected value does not move that reference point.
+This animation is specific to DatePicker popups and does not enable animations for ordinary menus.
+
+Apply `datePickerStyle(.compact)` and `labelsHidden()` before modifiers such as `padding()`
+or `environment`. These are methods on `BrianDatePicker`; applying SwiftUI's style to a parent
+container does not configure descendant BrianDatePicker controls.
+Selection changes take effect immediately. For cancellation, use the draft pattern below.
 
 ### Limit selectable dates
 

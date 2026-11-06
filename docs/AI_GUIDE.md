@@ -29,7 +29,7 @@ For icons, check the component-specific arguments in [BrianSymbols](../Sources/B
 - For floating buttons, use `.buttonStyle(.floating)` and `floatingButton...` modifiers.
 - For selection, suggestion, and input chips, use `BrianChip`, `chipSize(_:)`, and `chipVariant(_:)`. For an icon-only chip, combine a custom label with `chipLayout(.iconOnly)`.
 - App `@State`, models, and bindings own state. Using `.constant` for user input cannot retain changes.
-- For dates and times, use `BrianDatePicker` with a `Binding<Date>`, optional `in:` range, and `displayedComponents`. It has its own calendar and wheels; SwiftUI `datePickerStyle` does not configure it. See [Forms](../Sources/BrianUI/BrianUI.docc/Articles/Forms.md#selecting-dates-and-times).
+- For dates and times, use `BrianDatePicker` with a `Binding<Date>`, optional `in:` range, and `displayedComponents`. It has its own calendar and wheels. For compact buttons, apply `.datePickerStyle(.compact)` directly to the picker and `.datePickerScope()` to an ancestor screen outside scroll views. Apply `.labelsHidden()` before general view modifiers. See [Forms](../Sources/BrianUI/BrianUI.docc/Articles/Forms.md#selecting-dates-and-times).
 - Where possible, read semantic color and spacing tokens from `@Environment(\.theme)`.
 - Use expressive multicolor backgrounds with `.gradientBackground(.aurora, strength: .vivid)`. Palettes are `.aurora`, `.sunset`, and `.lagoon`; strengths are `.subtle` and `.vivid`. Defaults are `.aurora` and `.subtle`.
 - Use `.buttonGradient(.aurora)` for buttons and `.badgeGradient(.sunset)` for badges. `solid` uses a vivid fill, `weak` a subtle fill, and `outline` a border. Button `ghost` shows a gradient only while pressed. Pass `nil` to clear inheritance.
