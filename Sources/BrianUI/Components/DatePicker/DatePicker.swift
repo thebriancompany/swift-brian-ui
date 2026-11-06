@@ -27,9 +27,17 @@ public struct BrianDatePicker<Label: View>: View {
   @State private var monthPages: [Date] = []
   @State private var activePanel = Panel.calendar
 
+  @State private var showsDate = false
+  @State private var showsTime = false
+
+  private var hidesLabel = false
+  private var usesCompactStyle = false
+
   private let label: Label
   private let displayedComponents: DatePickerComponents
-  private let dayHeight: CGFloat = 44
+  private var dayHeight: CGFloat { usesCompactStyle ? 36 : 44 }
+  private var calendarSpacing: CGFloat { usesCompactStyle ? theme.spacing.small : theme.spacing.large }
+  private var daySpacing: CGFloat { usesCompactStyle ? theme.spacing.xSmall : theme.spacing.small }
   private let weekdayHeight: CGFloat = 20
   private var lowerBound: Date?
   private var upperBound: Date?
@@ -111,26 +119,166 @@ public struct BrianDatePicker<Label: View>: View {
     upperBound = range.upperBound
   }
 
+  /// Hides the visible label while retaining the compact control's accessibility label.
+  ///
+  /// Call before general view modifiers such as `padding()`.
+  /// - Returns: The picker with its visible label hidden.
+  public func labelsHidden() -> Self {
+    var copy = self
+    copy.hidesLabel = true
+    return copy
+  }
+
+  /// Shows compact buttons that open the BrianUI calendar and time wheels.
+  ///
+  /// Apply `datePickerScope()` to an ancestor screen container outside scroll views.
+  /// The scope is required to present the popup. Call this method before general view modifiers.
+  /// Selection changes update the binding immediately; dismissing does not cancel changes.
+  /// See <doc:Forms> for examples of compact controls and draft selection.
+  ///
+  /// - Parameter style: Pass `.compact` to use BrianUI's compact presentation.
+  /// - Returns: The picker configured to present its calendar and wheels in a popup.
+  public func datePickerStyle(_ style: CompactDatePickerStyle) -> Self {
+    var copy = self
+    copy.usesCompactStyle = true
+    return copy
+  }
+
   public var body: some View {
-    VStack(alignment: .leading, spacing: theme.spacing.medium) {
-      ViewThatFits(in: .horizontal) {
-        HStack(spacing: theme.spacing.small) {
-          label
-            .typography(theme.typography.title.small)
+    Group {
+      if usesCompactStyle {
+        compactPicker
+      } else {
+        expandedPicker
+      }
+    }
+    .onAppear { synchronizeCalendar() }
+    .onChange(of: dateCalendar) { _, _ in synchronizeCalendar() }
+    .onChange(of: selection) { oldValue, value in
+      selectionChanged(from: oldValue, to: value)
+    }
+  }
 
+  private var compactPicker: some View {
+    ViewThatFits(in: .horizontal) {
+      HStack(spacing: theme.spacing.small) {
+        if !hidesLabel {
+          label
           Spacer(minLength: theme.spacing.small)
-
-          if displayedComponents.contains(.hourAndMinute) {
-            timeHeading
-          }
         }
+        compactButtons
+      }
+      VStack(alignment: .leading, spacing: theme.spacing.small) {
+        if !hidesLabel { label }
+        compactButtons
+      }
+    }
+    .typography(theme.typography.body.medium)
+    .foregroundStyle(foregroundColor)
+    .accessibilityElement(children: .contain)
+    .accessibilityLabel { _ in label }
+  }
 
-        VStack(alignment: .leading, spacing: theme.spacing.small) {
-          label
-            .typography(theme.typography.title.small)
+  private var compactCalendarPopup: some View {
+    calendarContent
+      .padding(theme.spacing.medium)
+      .foregroundStyle(foregroundColor)
+      .buttonStyle(BrianDatePickerButtonStyle())
+      .onChange(of: scrollMonth) { _, value in
+        if let value { visibleMonth = value }
+      }
+  }
 
-          if displayedComponents.contains(.hourAndMinute) {
-            timeHeading
+  private var compactButtons: some View {
+    HStack(spacing: theme.spacing.small) {
+      if displayedComponents.contains(.date) {
+        Button {
+          synchronizeCalendar()
+          activePanel = .calendar
+          showsDate = true
+        } label: {
+          compactValue(compactDateFormatter.string(from: displayedSelection), isSelected: showsDate)
+        }
+        .brianDatePickerPopup(isPresented: $showsDate, width: 300) {
+          compactCalendarPopup
+        }
+      }
+      if displayedComponents.contains(.hourAndMinute) {
+        Button {
+          showsTime = true
+        } label: {
+          compactValue(formatted(displayedSelection, template: "jm"), isSelected: showsTime)
+        }
+        .brianDatePickerPopup(isPresented: $showsTime, width: 300) {
+          timePicker.padding(theme.spacing.medium)
+        }
+      }
+    }
+    .buttonStyle(.plain)
+  }
+
+  private var compactDateFormatter: DateFormatter {
+    let formatter = DateFormatter()
+    formatter.locale = locale
+    formatter.calendar = calendar
+    formatter.timeZone = timeZone
+    formatter.dateStyle = .medium
+    formatter.timeStyle = .none
+    return formatter
+  }
+
+  private func compactValue(_ value: String, isSelected: Bool) -> some View {
+    Text(value)
+      .typography(theme.typography.body.medium)
+      .monospacedDigit()
+      .fixedSize()
+      .padding(.horizontal, theme.spacing.small)
+      .padding(.vertical, theme.spacing.small)
+      .foregroundStyle(isSelected && isEnabled ? theme.color.foreground.brand.strong : foregroundColor)
+      .background(
+        isSelected && isEnabled
+          ? theme.color.background.brand.weak.normal
+          : theme.color.background.neutral.weak.normal,
+        in: Capsule()
+      )
+      .overlay {
+        if isSelected && isEnabled {
+          Capsule()
+            .strokeBorder(theme.color.border.brand.weak, lineWidth: 1)
+            .allowsHitTesting(false)
+        }
+      }
+      .accessibilityAddTraits(isSelected ? .isSelected : [])
+      .frame(minHeight: 44)
+      .contentShape(Rectangle())
+  }
+
+  private var expandedPicker: some View {
+    VStack(alignment: .leading, spacing: theme.spacing.medium) {
+      if !hidesLabel || displayedComponents.contains(.hourAndMinute) {
+        ViewThatFits(in: .horizontal) {
+          HStack(spacing: theme.spacing.small) {
+            if !hidesLabel {
+              label
+                .typography(theme.typography.title.small)
+            }
+
+            Spacer(minLength: theme.spacing.small)
+
+            if displayedComponents.contains(.hourAndMinute) {
+              timeHeading
+            }
+          }
+
+          VStack(alignment: .leading, spacing: theme.spacing.small) {
+            if !hidesLabel {
+              label
+                .typography(theme.typography.title.small)
+            }
+
+            if displayedComponents.contains(.hourAndMinute) {
+              timeHeading
+            }
           }
         }
       }
@@ -147,17 +295,8 @@ public struct BrianDatePicker<Label: View>: View {
     .buttonStyle(BrianDatePickerButtonStyle())
     .padding(theme.spacing.medium)
     .background(theme.color.background.base, in: .rect(cornerRadius: theme.radius.medium))
-    .onAppear {
-      synchronizeCalendar()
-    }
-    .onChange(of: dateCalendar) { _, _ in
-      synchronizeCalendar()
-    }
     .onChange(of: displayedComponents) { _, _ in
       activePanel = .calendar
-    }
-    .onChange(of: selection) { oldValue, value in
-      selectionChanged(from: oldValue, to: value)
     }
     .onChange(of: scrollMonth) { _, value in
       if let value {
@@ -193,27 +332,39 @@ public struct BrianDatePicker<Label: View>: View {
   }
 
   private var calendarContent: some View {
-    VStack(spacing: theme.spacing.large) {
-      ViewThatFits(in: .horizontal) {
-        HStack(spacing: theme.spacing.small) {
+    VStack(spacing: calendarSpacing) {
+      if usesCompactStyle {
+        HStack(spacing: theme.spacing.xSmall) {
           monthHeading
-            .fixedSize(horizontal: true, vertical: false)
-
-          Spacer(minLength: theme.spacing.small)
+            .frame(maxWidth: .infinity, alignment: .leading)
 
           if activePanel == .calendar {
             monthNavigation
+              .fixedSize()
           }
         }
+      } else {
+        ViewThatFits(in: .horizontal) {
+          HStack(spacing: theme.spacing.small) {
+            monthHeading
+              .fixedSize(horizontal: true, vertical: false)
 
-        VStack(alignment: .leading, spacing: theme.spacing.small) {
-          monthHeading
+            Spacer(minLength: theme.spacing.small)
 
-          if activePanel == .calendar {
-            HStack {
-              Spacer()
-
+            if activePanel == .calendar {
               monthNavigation
+            }
+          }
+
+          VStack(alignment: .leading, spacing: theme.spacing.small) {
+            monthHeading
+
+            if activePanel == .calendar {
+              HStack {
+                Spacer()
+
+                monthNavigation
+              }
             }
           }
         }
@@ -243,14 +394,15 @@ public struct BrianDatePicker<Label: View>: View {
 
   private var monthHeading: some View {
     Button(action: monthHeadingTapped) {
-      HStack(spacing: theme.spacing.small) {
+      HStack(spacing: usesCompactStyle ? theme.spacing.xSmall : theme.spacing.small) {
         Text(formatted(monthHeadingDate, template: "yMMMM"))
-          .typography(theme.typography.title.small)
+          .typography(usesCompactStyle ? theme.typography.body.small : theme.typography.title.small)
           .fontWeight(.bold)
+          .lineLimit(1)
           .foregroundStyle(foregroundColor)
 
         Image(symbol: .chevronRight)
-          .typography(theme.typography.label.medium)
+          .typography(usesCompactStyle ? theme.typography.label.small : theme.typography.label.medium)
           .rotationEffect(.degrees(activePanel == .month ? 90 : 0))
       }
       .frame(minHeight: 44)
@@ -260,12 +412,12 @@ public struct BrianDatePicker<Label: View>: View {
   }
 
   private var monthNavigation: some View {
-    HStack(spacing: theme.spacing.small) {
+    HStack(spacing: usesCompactStyle ? theme.spacing.xSmall : theme.spacing.small) {
       Button {
         moveMonth(by: -1)
       } label: {
         Image(symbol: .chevronLeft)
-          .typography(theme.typography.title.small)
+          .typography(usesCompactStyle ? theme.typography.label.medium : theme.typography.title.small)
           .frame(width: 44, height: 44)
       }
       .disabled(!canMoveMonth(by: -1))
@@ -274,7 +426,7 @@ public struct BrianDatePicker<Label: View>: View {
         moveMonth(by: 1)
       } label: {
         Image(symbol: .chevronRight)
-          .typography(theme.typography.title.small)
+          .typography(usesCompactStyle ? theme.typography.label.medium : theme.typography.title.small)
           .frame(width: 44, height: 44)
       }
       .disabled(!canMoveMonth(by: 1))
@@ -284,7 +436,7 @@ public struct BrianDatePicker<Label: View>: View {
 
   private var calendarGrid: some View {
     TimelineView(.everyMinute) { context in
-      VStack(spacing: theme.spacing.large) {
+      VStack(spacing: calendarSpacing) {
         HStack(spacing: .zero) {
           ForEach(0..<7) { index in
             Text(calendar.veryShortStandaloneWeekdaySymbols[(calendar.firstWeekday - 1 + index) % 7])
@@ -326,7 +478,7 @@ public struct BrianDatePicker<Label: View>: View {
 
     return LazyVGrid(
       columns: Array(repeating: GridItem(.flexible(), spacing: .zero), count: 7),
-      spacing: theme.spacing.small
+      spacing: daySpacing
     ) {
       ForEach(cells.indices, id: \.self) { index in
         if let date = cells[index] {
@@ -348,7 +500,7 @@ public struct BrianDatePicker<Label: View>: View {
       selectDay(date)
     } label: {
       Text(calendar.component(.day, from: date), format: .number.locale(locale))
-        .typography(theme.typography.title.medium)
+        .typography(usesCompactStyle ? theme.typography.body.medium : theme.typography.title.medium)
         .fontWeight(selected || isToday ? .semibold : .regular)
         .lineLimit(1)
         .minimumScaleFactor(0.5)
@@ -406,11 +558,11 @@ public struct BrianDatePicker<Label: View>: View {
   }
 
   private var gridHeight: CGFloat {
-    dayHeight * 6 + theme.spacing.small * 5
+    dayHeight * 6 + daySpacing * 5
   }
 
   private var calendarHeight: CGFloat {
-    weekdayHeight + theme.spacing.large + gridHeight
+    weekdayHeight + calendarSpacing + gridHeight
   }
 
   private func dayForegroundColor(selected: Bool, today: Bool, enabled: Bool) -> Color {

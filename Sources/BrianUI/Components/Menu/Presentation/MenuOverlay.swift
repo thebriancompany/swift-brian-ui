@@ -8,14 +8,19 @@ struct BrianMenuOverlay<Content: View>: View {
   let bounds: CGRect
   let dismiss: () -> Void
   let content: Content
+  var preferredWidth: CGFloat? = nil
+  var animatesPresentation = false
   @State private var contentHeight: CGFloat = 0
+  @State private var isRevealed = false
+  @State private var hasRevealed = false
+  @State private var isDismissing = false
 
   var body: some View {
     let frame = menuFrame
     ZStack(alignment: .topLeading) {
       Color.clear
         .contentShape(.rect)
-        .onTapGesture(perform: dismiss)
+        .onTapGesture(perform: dismissTapped)
 
       ScrollView {
         VStack(alignment: .leading, spacing: .zero) {
@@ -41,13 +46,44 @@ struct BrianMenuOverlay<Content: View>: View {
           .allowsHitTesting(false)
       }
       .shadow(theme.shadow.elevated)
-      .environment(\.dismissMenu, BrianMenuDismissAction(action: dismiss))
+      .environment(\.dismissMenu, BrianMenuDismissAction(action: dismissTapped))
       .environment(\.layoutDirection, layoutDirection)
       .onPreferenceChange(BrianMenuHeightPreference.self) { contentHeight = $0 }
+      .scaleEffect(
+        animatesPresentation && !isRevealed ? 0.15 : 1,
+        anchor: UnitPoint(
+          x: (anchor.midX - frame.minX) / max(frame.width, 1),
+          y: (anchor.midY - frame.minY) / max(frame.height, 1)
+        )
+      )
+      .opacity(contentHeight > 0 && (!animatesPresentation || isRevealed) ? 1 : 0)
       .position(x: frame.midX, y: frame.midY)
-      .opacity(contentHeight > 0 ? 1 : 0)
+      .allowsHitTesting(!isDismissing)
+      .onChange(of: contentHeight > 0, initial: true) { _, isMeasured in
+        guard animatesPresentation, isMeasured, !hasRevealed, !isDismissing else { return }
+        // Do not suspend between marking presentation started and revealing it:
+        // wheel initialization can invalidate the pending view task.
+        hasRevealed = true
+        withAnimation(.spring(duration: 0.28, bounce: 0.12)) {
+          isRevealed = true
+        }
+      }
     }
     .environment(\.layoutDirection, .leftToRight)
+  }
+
+  private func dismissTapped() {
+    guard !isDismissing else { return }
+    guard animatesPresentation else {
+      dismiss()
+      return
+    }
+    isDismissing = true
+    withAnimation(.easeInOut(duration: 0.2), completionCriteria: .removed) {
+      isRevealed = false
+    } completion: {
+      dismiss()
+    }
   }
 
   private var menuFrame: CGRect {
@@ -63,7 +99,8 @@ struct BrianMenuOverlay<Content: View>: View {
     let opensBelow = usesPreferred ? prefersBottom : !prefersBottom
     let height = min(desiredHeight, opensBelow ? below : above)
     let fixedWidth: CGFloat = property.size == .small ? 200 : 240
-    let width = min(property.width == .trigger ? anchor.width : fixedWidth, available.width)
+    let requestedWidth = preferredWidth ?? (property.width == .trigger ? anchor.width : fixedWidth)
+    let width = min(requestedWidth, available.width)
     let isRTL = layoutDirection == .rightToLeft
     let proposedX: CGFloat
     switch property.alignment {
