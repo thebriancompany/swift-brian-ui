@@ -16,12 +16,12 @@ SwiftUI 앱을 위한 테마와 UI 컴포넌트 라이브러리입니다.
 - iOS 18 이상 / macOS 15 이상
 
 ```swift
-.package(url: "https://github.com/thebriancompany/swift-brian-ui.git", exact: "0.2.9")
+.package(url: "https://github.com/thebriancompany/swift-brian-ui.git", exact: "0.2.10")
 ```
 
 ## 문서
 
-- [API 문서 (DocC)](https://thebriancompany.github.io/swift-brian-ui/0.2.9/documentation/brianui/)
+- [API 문서 (DocC)](https://thebriancompany.github.io/swift-brian-ui/0.2.10/documentation/brianui/)
 - [시작하기와 컴포넌트 선택](Sources/BrianUI/BrianUI.docc/Articles/GettingStarted.md)
 - [테마와 스타일](Sources/BrianUI/BrianUI.docc/Articles/Theming.md)
 - [그라디언트와 다색 표현](Sources/BrianUI/BrianUI.docc/Articles/Gradients.md)
