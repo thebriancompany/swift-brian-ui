@@ -36,7 +36,8 @@
         self.content = content
       }
       self.environment = environment
-      if let hostedContent {
+      // Keep pending content for the next presentation without replacing the outgoing view.
+      if presentation.canUpdatePresentedContent, let hostedContent {
         dialog?.update(content: hostedContent, environment: environment)
       }
       animator?.update(environment: environment)

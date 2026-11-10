@@ -1,6 +1,30 @@
 import SwiftUI
 
 extension View {
+  /// Presents a bottom sheet while `item` is non-nil.
+  ///
+  /// Dismissing the sheet sets `item` to `nil`. Updates with the same ID preserve
+  /// content state; a different ID replaces the content and resets its state.
+  /// The last content remains visible during the dismissal animation.
+  public func bottomSheet<Item: Identifiable, SheetContent: View>(
+    item: Binding<Item?>,
+    snapPoints: [BrianBottomSheetSnapPoint] = [],
+    isDismissible: Bool = true,
+    @ViewBuilder content: @escaping (Item) -> SheetContent
+  ) -> some View {
+    let presentedItem = item.wrappedValue
+    return bottomSheet(
+      isPresented: item[brianIsPresented: presentedItem?.id],
+      snapPoints: snapPoints,
+      isDismissible: isDismissible
+    ) {
+      if let presentedItem {
+        content(presentedItem)
+          .id(presentedItem.id)
+      }
+    }
+  }
+
   /// Presents a BrianUI bottom sheet at the bottom of the screen.
   ///
   /// Deduplicates and sorts valid snap points, starting at the lowest point.

@@ -72,6 +72,48 @@ struct BrianSheetExample: View {
 It does not prevent dismissal through the presentation binding or the container's close button.
 When snap points exist, the handle appears even with `bottomSheetShowsHandle(false)`.
 
+## Presenting an optional item
+
+Both `bottomSheet(item:)` and the custom-content `alert(item:onDismiss:content:)`
+accept a binding to an optional `Identifiable` value. Assign an item to present it;
+set it to `nil` to dismiss. User-initiated dismissal also clears the binding.
+
+```swift
+struct ItemPresentationExample: View {
+  struct Selection: Identifiable {
+    let id: Int
+    var title: String
+  }
+
+  @State private var sheet: Selection?
+  @State private var alert: Selection?
+
+  var body: some View {
+    VStack {
+      Button("Details") { sheet = Selection(id: 1, title: "Details") }
+      Button("Notice") { alert = Selection(id: 2, title: "Notice") }
+    }
+    .bottomSheet(item: $sheet) { item in
+      BrianBottomSheetContainer(title: item.title) {
+        Text("Details for item \(item.id)")
+      }
+      .bottomSheetShowsCloseButton(true)
+    }
+    .alert(item: $alert) { item in
+      BrianAlert(item.title, description: "Review this item.") {
+        BrianAlertButton("OK") {}
+      }
+    }
+  }
+}
+```
+
+Changing data with the same ID updates the content while preserving its local state.
+Assigning a different ID replaces the content in the existing presentation and resets
+the content's local state. The last content is retained during dismissal.
+If a new item arrives during dismissal, it is presented after dismissal completes.
+For alerts, `onDismiss` runs after the dismissal animation.
+
 ## Anchored menus
 
 `menuAnchor(id:)` registers only a position. Set the selected ID in a button action to open the menu.
