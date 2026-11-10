@@ -10,7 +10,7 @@ import SwiftUI
 public struct BrianAlertFooter {
   public static func buildBlock<Primary: View>(_ primary: Primary) -> some View {
     primary
-      .buttonStyle(.solid)
+      .buttonStyle(.brian(.solid))
       .buttonSize(.large)
   }
 
@@ -20,11 +20,11 @@ public struct BrianAlertFooter {
   ) -> some View {
     BrianButtonGroup {
       primary
-        .buttonStyle(.solid)
+        .buttonStyle(.brian(.solid))
         .buttonSize(.large)
     } secondary: {
       secondary
-        .buttonStyle(.weak)
+        .buttonStyle(.brian(.weak))
         .buttonSize(.large)
     }
   }

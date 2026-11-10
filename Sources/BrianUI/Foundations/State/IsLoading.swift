@@ -7,7 +7,8 @@ extension EnvironmentValues {
 extension View {
   /// Passes loading state to descendants and disables interaction while loading.
   ///
-  /// BrianUI button styles that read this environment value provide the loading appearance.
+  /// The `.brian(...)` and `.floating` button styles replace their labels with a spinner.
+  /// The `.press` style suppresses press feedback but leaves loading content to the caller.
   /// Does not add a spinner to arbitrary views or start asynchronous work.
   ///
   /// - Parameter isLoading: Whether loading is in progress.

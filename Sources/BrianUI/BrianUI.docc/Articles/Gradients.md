@@ -77,7 +77,7 @@ struct GradientControlsExample: View {
       Button("Generate ideas · \(count)", systemImage: "sparkles") {
         count += 1
       }
-      .buttonStyle(.solid)
+      .buttonStyle(.brian(.solid))
       .buttonGradient(.aurora)
 
       BrianBadge(title: "Recommended", systemImage: "sparkles")

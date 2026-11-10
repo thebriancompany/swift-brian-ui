@@ -25,7 +25,9 @@ For icons, check the component-specific arguments in [BrianSymbols](../Sources/B
 - Specify BrianSymbols with `Image(symbol:)`, `symbol:` for badges and menus, `icon:` for callouts, and `suffixSymbol:` for chips. Chip prefixes use `.icon(.symbol(.checkmark))` and also support SF Symbols.
 - The package requires Swift tools 6.4, iOS 18 or later, and macOS 15 or later.
 - The default theme works without setup. Inject a custom theme with `.environment(\.theme, theme)`.
-- For standard buttons, apply `.buttonStyle(.solid)`, `.weak`, `.outline`, or `.ghost` to a SwiftUI `Button`. There is no `BrianButton` view.
+- For standard buttons, apply `.buttonStyle(.brian(.solid))` with appearance `.solid`, `.weak`, `.outline`, or `.ghost` to a SwiftUI `Button`. There is no `BrianButton` view.
+- Choose standard button shape at the style call, such as `.brian(.weak, shape: .circle)`. Use `.labelStyle(.iconOnly)` separately to hide label text. Size and tone remain environment modifiers.
+- For caller-styled content, use `.buttonStyle(.press)` or `.press(.opacity)`. These add no padding, fonts, colors, hit regions, disabled appearance, or loading indicators. See [Buttons](../Sources/BrianUI/BrianUI.docc/Articles/Buttons.md).
 - For floating buttons, use `.buttonStyle(.floating)` and `floatingButton...` modifiers.
 - For selection, suggestion, and input chips, use `BrianChip`, `chipSize(_:)`, and `chipVariant(_:)`. For an icon-only chip, combine a custom label with `chipLayout(.iconOnly)`.
 - App `@State`, models, and bindings own state. Using `.constant` for user input cannot retain changes.
@@ -45,7 +47,7 @@ For icons, check the component-specific arguments in [BrianSymbols](../Sources/B
 | `maximumLength(_:)` | Displays the count and overflow state. Does not truncate input or block submission. Negative values become 0; `nil` removes the limit indicator. |
 | `requirement(.required)` | Adds only a required indicator. The app validates empty values. |
 | `errorMessage(_:)` | A nonempty error takes precedence over helper text. Pass `nil` or an empty string to remove it. |
-| `isLoading(_:)` | Sets an environment value and disables interaction. Button styles that read it show loading. Does not execute the task. |
+| `isLoading(_:)` | Sets an environment value and disables interaction. `.brian(...)` and `.floating` show a spinner; `.press` leaves loading content to the caller. Does not execute the task. |
 | `BrianQuantityPicker` | Changes by 1. Has no range argument; the app computes `isDecrementDisabled` and `isIncrementDisabled`. |
 | `BrianDatePicker` | Calendar paging only browses. For cancelable editing, bind to an app-owned draft. See [date and time selection](../Sources/BrianUI/BrianUI.docc/Articles/Forms.md#selecting-dates-and-times) for wheel updates and range handling. |
 | `BrianCheckboxGroup` | Handles layout. Connect select-all bindings with `BrianCheckbox(..., sources: [...])`. |
@@ -73,7 +75,7 @@ For icons, check the component-specific arguments in [BrianSymbols](../Sources/B
 - `Foundations/Color`, `Gradient`, `Font`, `Spacing`, `Radius`, `Shadow`: tokens and defaults
 - `Components/Image`: `Image.Style`, BrianSymbols and SF Symbols image initializers
 - `Components/Gradient`: mesh backgrounds and background/foreground modifiers
-- `Components/Button/Style`: button styles and static accessors such as `.solid`
+- `Components/Button/Style`: button styles and entry points `.brian(...)` and `.press`
 - `Components/<Component>/Environment+*.swift`: public environment modifiers
 - `Components/<Component>/*Property*.swift`: configuration types, defaults, and enum cases
 - `Components/Alert/View+Alert.swift`, `BottomSheet/View+BottomSheet.swift`, `Menu/View+Menu.swift`: presentation entry points

@@ -34,7 +34,7 @@ private struct BrianThemeContent: View {
         .foregroundStyle(theme.color.foreground.primary)
 
       Button("OK") {}
-        .buttonStyle(.solid)
+        .buttonStyle(.brian(.solid))
     }
     .padding(theme.spacing.large)
   }
@@ -63,10 +63,10 @@ struct BrianButtonStylesExample: View {
   var body: some View {
     VStack {
       Button("Save") {}
-        .buttonStyle(.solid)
+        .buttonStyle(.brian(.solid))
 
       Button("Delete") {}
-        .buttonStyle(.outline)
+        .buttonStyle(.brian(.outline))
         .buttonTone(.critical)
     }
     .buttonSize(.large)
@@ -81,5 +81,6 @@ Prefer one clear approach where possible. Use dedicated settings such as `floati
 ## Loading and disabled states
 
 `isLoading(true)` passes a loading environment value and disables interaction.
-BrianUI button styles that read it display loading. Applying it to a general container does not automatically add a spinner.
+The `.brian(...)` and `.floating` button styles display a spinner; `.press` leaves loading content to the caller.
+Applying it to a general container does not automatically add a spinner.
 The app manages asynchronous task start and completion, error handling, and loading state.

@@ -35,7 +35,7 @@ struct BrianWelcomeView: View {
       Button("Clear name") {
         name = ""
       }
-      .buttonStyle(.solid)
+      .buttonStyle(.brian(.solid))
       .buttonTone(.brand)
     }
     .padding()
@@ -47,7 +47,8 @@ struct BrianWelcomeView: View {
 
 | Purpose | API | Configuration |
 | --- | --- | --- |
-| Standard button | SwiftUI `Button` | `.buttonStyle(.solid / .weak / .outline / .ghost)` |
+| Standard button | SwiftUI `Button` | `.buttonStyle(.brian(.solid))`; see <doc:Buttons> |
+| Custom button feedback | SwiftUI `Button` | `.buttonStyle(.press)` or `.press(.opacity)` |
 | Floating button | SwiftUI `Button` | `.buttonStyle(.floating)`, `floatingButtonSize(_:)` |
 | Primary and secondary action layout | ``BrianButtonGroup`` | `primary`, `secondary` closures |
 | Single-line / multiline input | ``BrianTextField``, ``BrianTextArea`` | String binding, dedicated modifiers |
@@ -57,7 +58,7 @@ struct BrianWelcomeView: View {
 | Quantity adjustment | ``BrianQuantityPicker`` | `quantity:`, per-direction disabled conditions |
 | Date / time selection | ``BrianDatePicker`` | `selection:`, optional `in:` range, `displayedComponents:`; compact presentation uses the current window (see <doc:Forms>) |
 | Status display | ``BrianBadge``, ``BrianCallout`` | Component-specific property modifiers |
-| Loading indicator | ``BrianLoadingSpinner`` | Place directly or apply `isLoading(_:)` to a button |
+| Loading indicator | ``BrianLoadingSpinner`` | Place directly or apply `isLoading(_:)` to a `.brian(...)` or `.floating` button; `.press` requires caller-provided loading content |
 | Modal presentation | BrianUI `alert`, `bottomSheet` modifiers | Presentation binding and content |
 | Anchored menu | `menuAnchor(id:)`, `menuScope(selection:content:)` | Matching ID types and selection binding |
 
