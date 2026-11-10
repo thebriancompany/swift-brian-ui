@@ -37,8 +37,11 @@
         self.content = content
       }
       self.environment = environment
-      if let dialog, let hostedContent {
-        dialog.rootView = hostedContent
+      if let dialog {
+        // Keep pending content for the next presentation without replacing the outgoing view.
+        if presentation.canUpdatePresentedContent, let hostedContent {
+          dialog.rootView = hostedContent
+        }
         dialog.overrideUserInterfaceStyle = environment.colorScheme == .dark ? .dark : .light
         if let controller = dialog.presentationController as? BrianAlertUIKitPresentationController<Content> {
           controller.update(environment: environment)

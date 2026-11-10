@@ -18,6 +18,12 @@ final class BrianModalPresentation {
   private let present: @MainActor () -> Bool
   private let dismiss: @MainActor () -> Void
 
+  /// A dismissal requested during presentation waits for the entrance animation,
+  /// but its outgoing content must already remain unchanged.
+  var canUpdatePresentedContent: Bool {
+    !dismissalRequested && phase != .dismissing
+  }
+
   init(
     present: @escaping @MainActor () -> Bool,
     dismiss: @escaping @MainActor () -> Void

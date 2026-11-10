@@ -74,7 +74,8 @@ final class BrianBottomSheetAppKitCoordinator<Content: View> {
       self.content = content
     }
     self.environment = environment
-    if let hostedContent {
+    // Keep pending content for the next presentation without replacing the outgoing view.
+    if presentation.lifecycle.canUpdatePresentedContent, let hostedContent {
       host?.rootView = hostedContent
     }
     panel?.appearance = NSAppearance(named: environment.colorScheme == .dark ? .darkAqua : .aqua)
