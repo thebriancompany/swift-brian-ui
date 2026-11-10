@@ -44,10 +44,9 @@ use components with the `Brian` prefix. The caller owns state and passes it thro
 
 ### Buttons and feedback
 
-- ``BrianSolidButtonStyle``
-- ``BrianWeakButtonStyle``
-- ``BrianOutlineButtonStyle``
-- ``BrianGhostButtonStyle``
+- <doc:Buttons>
+- ``BrianButtonStyle``
+- ``BrianPressButtonStyle``
 - ``BrianFloatingButtonStyle``
 - ``BrianButtonProperty``
 - ``BrianButtonGroup``

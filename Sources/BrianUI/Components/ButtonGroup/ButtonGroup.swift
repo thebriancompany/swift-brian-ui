@@ -15,7 +15,7 @@ import SwiftUI
 ///     Text("Primary Solid")
 ///       .frame(maxWidth: .infinity)
 ///   }
-///   .buttonStyle(.solid)
+///   .buttonStyle(.brian(.solid))
 /// } secondary: {
 ///   Button {
 ///
@@ -23,7 +23,7 @@ import SwiftUI
 ///     Text("Secondary Outline")
 ///       .frame(maxWidth: .infinity)
 ///   }
-///   .buttonStyle(.outline)
+///   .buttonStyle(.brian(.outline))
 /// }
 /// ```
 public struct BrianButtonGroup<Primary: View, Secondary: View>: View {

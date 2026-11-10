@@ -24,7 +24,7 @@ struct BrianAlertExample: View {
     Button(deleted ? "Deleted" : "Delete") {
       showsAlert = true
     }
-    .buttonStyle(.outline)
+    .buttonStyle(.brian(.outline))
     .alert(
       isPresented: $showsAlert,
       title: "Delete this item?",
@@ -54,13 +54,13 @@ struct BrianSheetExample: View {
 
   var body: some View {
     Button("View details") { showsSheet = true }
-      .buttonStyle(.weak)
+      .buttonStyle(.brian(.weak))
       .bottomSheet(isPresented: $showsSheet, snapPoints: [.fraction(0.5), .fraction(0.9)]) {
         BrianBottomSheetContainer(title: "Details") {
           Text("This is the bottom sheet content.")
         } footer: {
           Button("Done") { showsSheet = false }
-            .buttonStyle(.solid)
+            .buttonStyle(.brian(.solid))
         }
         .bottomSheetShowsCloseButton(true)
       }

@@ -326,7 +326,7 @@ public struct BrianDatePicker<Label: View>: View {
           .rotationEffect(.degrees(activePanel == .time ? 90 : 0))
       }
     }
-    .buttonStyle(.weak)
+    .buttonStyle(.brian(.weak))
     .buttonTone(.neutral)
     .buttonSize(.small)
   }

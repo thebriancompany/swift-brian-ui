@@ -43,7 +43,7 @@ struct BrianFormExample: View {
         submitted = true
         nameFocused = name.isEmpty
       }
-      .buttonStyle(.solid)
+      .buttonStyle(.brian(.solid))
       .disabled(name.count > 20 || memo.count > 200)
     }
     .padding()
