@@ -32,3 +32,7 @@ A theme and UI component library for SwiftUI apps.
 - [Documentation guidelines and DocC builds](docs/DOCUMENTATION.md)
 
 When building apps with AI, include `docs/AI_GUIDE.md` in the context.
+
+## Showcase
+
+- [BrianText on the App Store](https://apps.apple.com/app/id6833252823)

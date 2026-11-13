@@ -32,3 +32,7 @@ SwiftUI 앱을 위한 테마와 UI 컴포넌트 라이브러리입니다.
 - [문서 작성 기준과 DocC 빌드](docs/DOCUMENTATION.md)
 
 AI로 앱을 구현할 때는 `docs/AI_GUIDE.md`를 컨텍스트에 제공하세요.
+
+## 쇼케이스
+
+- [BrianText (App Store)](https://apps.apple.com/app/id6833252823)
